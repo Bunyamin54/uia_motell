@@ -51,33 +51,8 @@ MySQL eller MariaDB for å lagre bruker- og bookingdata.
 
 # Room Booking System
 
-```project-root/
-├── public/              # Publicly accessible files
-│   ├── index.php        # Entry point of the application
-│   ├── assets/          # CSS, JS, and other frontend resources
-│   │   ├── styles.css
-│   │   ├── script.js
-│   │   └── images/
-│   └── login.php        # Login page for both users and admins
-├── includes/            # Reusable components
-│   ├── db.php           # PDO database connection
-│   ├── header.php       # Header template
-│   ├── footer.php       # Footer template
-│   └── auth.php         # User authentication functions
-├── admin/               # Admin-specific features
-│   ├── dashboard.php    # Admin dashboard
-│   ├── manage-rooms.php # Add/edit/delete rooms
-│   ├── bookings.php     # Manage bookings
-├── guest/               # Guest-specific features
-│   ├── search.php       # Room search interface
-│   ├── book-room.php    # Room booking process
-│   ├── profile.php      # Guest profile and history
-├── migrations/          # Scripts to set up database schema
-│   ├── run-mig.php      # Database migration script
-│   ├── run-seed.php     # Data seeding script
-├── config/              # Configuration files
-│   └── config.php       # Global settings
-└── README.md            # Documentation
+```
 
-README.md
+
+
 
