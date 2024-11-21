@@ -53,6 +53,32 @@ MySQL eller MariaDB for å lagre bruker- og bookingdata.
 
 ```
 
+UIA_MOTELL/
+├── admin/
+│   ├── home.php
+│   ├── rooms.php
+│   ├── settings.php
+├── config/
+│   ├── config.php
+│   ├── db.php
+├── inc/
+│   ├── contact.php
+│   ├── home.php
+│   ├── login_register.php
+│   ├── navbar.php
+│   ├── rooms.php
+├── migrations/
+│   ├── run-mig.php
+│   ├── run-seed.php
+├── public/
+│   ├── images/
+│   │   ├── home/
+│   │   ├── reviews/
+│   │   ├── rooms/
+│   ├── index.php
+│   ├── scripts.js
+│   ├── styles.css
+├── README.md
 
 
 
