@@ -1,3 +1,6 @@
+  //* Db connection
+  
+
 <?php
 // db.php
 $host = 'localhost'; // Change as needed

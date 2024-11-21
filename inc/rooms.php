@@ -1,0 +1,1 @@
+ //* rooms page for  guest
