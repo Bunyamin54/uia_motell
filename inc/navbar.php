@@ -53,7 +53,7 @@
             <div class="modal-content">
                 <form id="login-form">
                     <div class="modal-header">
-                    <i class="bi bi-person-lines-fill fs-3 me-2"></i>
+                        <i class="bi bi-person-lines-fill fs-3 me-2"></i>
                         <h5 class="modal-title" id="loginModalLabel">Login</h5>
                         <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -82,7 +82,7 @@
             <div class="modal-content">
                 <form id="register-form">
                     <div class="modal-header">
-                    <i class="bi bi-person-lines-fill fs-3 me-2"></i>
+                        <i class="bi bi-person-lines-fill fs-3 me-2"></i>
                         <h5 class="modal-title" id="registerModalLabel">Register</h5>
                         <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -109,10 +109,12 @@
                                     <label class="form-label">Postal Code</label>
                                     <input name="postal_code" type="number" class="form-control shadow-none" required>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Date of Birth</label>
-                                    <input name="dob" type="date" class="form-control shadow-none" required>
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label for="birthDatePicker" class="form-label">Birth Date </label>
+                                    <input name="dob" id="birthDatePicker" type="text" class="form-control shadow-none" required>
                                 </div>
+
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Password</label>
                                     <input name="password" type="password" class="form-control shadow-none" required>
@@ -132,8 +134,29 @@
         </div>
     </div>
 
+    <!-- Include Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        // Initialize Flatpickr
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#birthDatePicker", {
+                dateFormat: "Y-m-d", // Specify the format
+                maxDate: "today" // Prevent future dates
+            });
+        });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Flatpickr for Date Picker -->
+
+
 </body>
 
 </html>
