@@ -24,9 +24,9 @@
                 <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
             </div>
         </div>
-        <!-- Swiper navigation buttons -->
+        <!-- Swiper navigation buttons
         <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-prev"></div> -->
         <!-- Swiper pagination -->
         <div class="swiper-pagination"></div>
     </div>
