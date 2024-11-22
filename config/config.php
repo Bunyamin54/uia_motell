@@ -1,42 +1,18 @@
-  //* Db connection
-  
-
 <?php
-// db.php
-$host = 'localhost'; // Change as needed
-$db = 'uiamotell';
-$user = 'gruppe-2';
-$pass = '12345';
-$charset = 'utf8mb4';
+// Database credentials
+define('DB_HOST', '127.0.0.1');
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
 
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
-}
 
-require 'db.php';
+    // Change as needed
+define('DB_NAME', 'uia_motell');      // Your database name
+define('DB_USER', 'root');            // Your database username
+define('DB_PASS', '123');                // Your database password
+define('DB_CHARSET', 'utf8mb4');      // Character set
 
-// Example: Fetch all rooms
-$stmt = $pdo->query('SELECT * FROM rooms');
-$rooms = $stmt->fetchAll();
+// Application settings
+define('APP_NAME', 'UIA Motel');      // Application name
+define('BASE_URL', 'http://localhost/UIA_MOTELL/'); // Change this to your base URL
 
-foreach ($rooms as $room) {
-    echo $room['name'] . '<br>';
-}
-?>
-
-<?php
-require 'db.php';
-
-// Insert a new booking
-$sql = 'INSERT INTO bookings (user_id, room_id, check_in, check_out) VALUES (?, ?, ?, ?)';
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$userId, $roomId, $checkIn, $checkOut]);
+// Debug mode
+define('DEBUG_MODE', true); // Set to false in production
