@@ -5,7 +5,7 @@ session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     header('Location: index.php');
     exit;
-}
+} 
 
 // Include database connection
 include('../config/config.php');

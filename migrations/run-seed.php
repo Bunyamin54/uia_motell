@@ -95,7 +95,7 @@ try {
         ['name' => 'site_name', 'value' => 'Uia Motell'],
         ['name' => 'admin_email', 'value' => 'admin@uia.com']
     ];
-    
+
     foreach ($defaultSettings as $setting) {
         $stmt = $pdo->prepare("
             INSERT INTO settings (name, value) 
@@ -108,7 +108,22 @@ try {
         ]);
         echo "Inserted or updated {$setting['name']} in settings.<br>";
     }
-    
+
+      // Seed Shutdown Setting**
+    $defaultSettings[] = ['name' => 'shutdown', 'value' => '0'];
+
+    foreach ($defaultSettings as $setting) {
+        $stmt = $pdo->prepare("
+                    INSERT INTO settings (name, value) 
+                    VALUES (:name, :value) 
+                    ON DUPLICATE KEY UPDATE value = VALUES(value)
+                ");
+        $stmt->execute([
+            ':name' => $setting['name'],
+            ':value' => $setting['value']
+        ]);
+    }
+    echo "Shutdown setting seeded successfully.<br>";
 
 
     echo "Seeding completed successfully!";
