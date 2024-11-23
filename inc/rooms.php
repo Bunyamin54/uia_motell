@@ -27,7 +27,7 @@
             <!-- Room Card 1 -->
             <div class="col-lg-4 col-md-6 my-3">
                 <div class="card border-0 shadow" style="max-width: 350px; margin:auto;">
-                    <img src="../public/images/rooms/1.png" class="card-img-top">
+                    <img src="../public/images/rooms/4.jpg" class="card-img-top">
                     <div class="card-body">
                         <h5>Single Room</h5>
                         <h5 class="mb-4">From $150 per night</h5>

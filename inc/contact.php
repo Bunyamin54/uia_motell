@@ -27,18 +27,18 @@
 
 
             <!-- Google Map -->
-         
-<div class="col-lg-6 col-md-12">
-    <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12208.31901099453!2d7.9927659123180215!3d58.161093380083216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4638025378c67fc7%3A0xfd4fe654e2fbbb6a!2sUniversity%20of%20Agder!5e0!3m2!1sen!2sno!4v1732396148976!5m2!1sen!2sno" 
-        width="100%" 
-        height="400" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-</div>
+
+            <div class="col-lg-6 col-md-12">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12208.31901099453!2d7.9927659123180215!3d58.161093380083216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4638025378c67fc7%3A0xfd4fe654e2fbbb6a!2sUniversity%20of%20Agder!5e0!3m2!1sen!2sno!4v1732396148976!5m2!1sen!2sno"
+                    width="100%"
+                    height="400"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
 
 
 
@@ -57,16 +57,25 @@
 
                     <h5 class="fw-bold">Follow Us</h5>
                     <div class="d-flex">
-                        <a href="https://www.facebook.com/" target="_blank" class="btn btn-outline-dark rounded-circle me-2">
+                        <a href="https://www.facebook.com/" target="_blank" class="me-3" style="color: #1877F2; font-size: 1.5rem;">
                             <i class="bi bi-facebook"></i>
                         </a>
-                        <a href="https://www.instagram.com/" target="_blank" class="btn btn-outline-dark rounded-circle me-2">
+                        <a href="https://www.instagram.com/" target="_blank" class="me-3" style="color: #E4405F; font-size: 1.5rem;">
                             <i class="bi bi-instagram"></i>
                         </a>
-                        <a href="https://www.youtube.com/" target="_blank" class="btn btn-outline-dark rounded-circle me-2">
+                        <a href="https://www.youtube.com/" target="_blank" class="me-3" style="color: #FF0000; font-size: 1.5rem;">
                             <i class="bi bi-youtube"></i>
                         </a>
+
+                        <a href="https://twitter.com/" target="_blank" class="me-3" style="color: #1DA1F2; font-size: 1.5rem;">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+
+
+
                     </div>
+
+
                 </div>
             </div>
 
