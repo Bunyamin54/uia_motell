@@ -91,7 +91,6 @@
               <button type="submit" class="btn btn-warning">Save Settings</button>
           </form>
 
-
           <div class="card border-0 shadow-none mb-4" style="min-width: 100%;">
               <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-3">
@@ -110,6 +109,9 @@
                   </p>
               </div>
           </div>
+
+          <!-- Toast Container -->
+          <div class="toast-container position-fixed top-0 end-0 p-3"></div>
 
 
 
@@ -140,11 +142,27 @@
                   })
                   .then(response => response.json())
                   .then(data => {
-                      if (data.success) {
-                          alert('Shutdown setting updated successfully!');
-                      } else {
-                          alert('Failed to update shutdown setting!');
-                      }
+                      const toastContainer = document.querySelector('.toast-container');
+
+                      // Dinamik Toast Mesajı
+                      const toast = document.createElement('div');
+                      toast.className = `toast text-bg-${data.success ? 'success' : 'danger'} show`;
+                      toast.setAttribute('role', 'alert');
+                      toast.setAttribute('aria-live', 'assertive');
+                      toast.setAttribute('aria-atomic', 'true');
+                      toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${data.success ? 'Shutdown setting updated successfully!' : 'Failed to update shutdown setting!'}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+                      // message will be removed after 3 seconds
+
+                      toastContainer.appendChild(toast);
+                      setTimeout(() => toast.remove(), 3000);
                   });
           }
       </script>
