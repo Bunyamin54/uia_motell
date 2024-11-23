@@ -46,10 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Load settings from the database
 $stmt = $pdo->query("SELECT name, value FROM settings");
 $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,13 +60,22 @@ $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     <div class="container mt-5">
         <h1>Edit Site Settings</h1>
 
+        <!-- Toast Notification -->
         <?php if (isset($_SESSION['message'])): ?>
-            <div class="alert alert-<?= $_SESSION['message_type'] ?>" role="alert">
-                <?= $_SESSION['message'] ?>
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast show text-bg-<?= $_SESSION['message_type'] ?>" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?= $_SESSION['message'] ?>
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
             </div>
             <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
         <?php endif; ?>
 
+        <!-- Settings Form -->
         <form method="POST" class="mt-4">
             <div class="mb-3">
                 <label for="site_name" class="form-label">Site Name</label>
@@ -82,6 +88,16 @@ $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
             <button type="submit" class="btn btn-warning">Save Settings</button>
         </form>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Automatically hide toast after 3 seconds
+        const toastEl = document.querySelector('.toast');
+        if (toastEl) {
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
