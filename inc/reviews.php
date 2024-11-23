@@ -9,7 +9,7 @@
             <div class="swiper-slide bg-white p-3 rounded shadow-sm" style="max-width: 300px; margin-right: 15px;">
                 <div class="profile d-flex align-items-center mb-2">
                     <i class="bi bi-person-circle" style="font-size: 30px; "></i>
-                    <h6 class="m-0 ms-2">Elizabet Doe</h6>
+                    <h6 class="m-0 ms-2">Elizabet Rasmussen</h6>
                 </div>
                 <p class="small">
                     "Absolutely loved the ambiance and the staff were super friendly! Highly recommend for a peaceful getaway."
@@ -44,7 +44,7 @@
             <div class="swiper-slide bg-white p-3 rounded shadow-sm" style="max-width: 300px; margin-right: 15px;">
                 <div class="profile d-flex align-items-center mb-2">
                     <i class="bi bi-person-circle" style="font-size: 30px; "></i>
-                    <h6 class="m-0 ms-2">Emily White</h6>
+                    <h6 class="m-0 ms-2">Emily Nilsen</h6>
                 </div>
                 <p class="small">
                     "The facilities exceeded my expectations. A perfect place for a family vacation!"
