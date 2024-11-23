@@ -20,7 +20,7 @@
 <body class="bg-light">
 
     <!-- Room Section Header -->
-    <h2 class="mt-5 pl-4 mb-4 text-center fw-bold h-font"style="color:#C80F2F;">Our Rooms</h2>
+    <h2 class="mt-5 pl-4 mb-4 text-center fw-bold h-font" style="color:#C80F2F;">Our Rooms</h2>
     <div class="container">
 
         <div class="row">
@@ -39,13 +39,23 @@
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">Wi-Fi</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">TV</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">AC</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-wifi"></i> Wi-Fi
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-tv"></i> TV
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-snow"></i> AC
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                            <i class="bi bi-laptop"></i> Workspace
+                            </span>
                         </div>
+
                         <div class="d-flex justify-content-evenly mb-2">
                             <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info</a>
+                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>
@@ -66,13 +76,23 @@
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">Wi-Fi</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">TV</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">AC</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-wifi"></i> Wi-Fi
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-tv"></i> TV
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-snow"></i> AC
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                            <i class="bi bi-cup-hot"></i> Coffee Maker
+                            </span>
                         </div>
+
                         <div class="d-flex justify-content-evenly mb-2">
                             <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info</a>
+                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>
@@ -93,13 +113,23 @@
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">Wi-Fi</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">TV</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">AC</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-wifi"></i> Wi-Fi
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-tv"></i> TV
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                                <i class="bi bi-snow"></i> AC
+                            </span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">
+                            <i class="bi bi-cup-straw"></i> Mini Bar
+                            </span>
                         </div>
+
                         <div class="d-flex justify-content-evenly mb-2">
                             <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info</a>
+                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>

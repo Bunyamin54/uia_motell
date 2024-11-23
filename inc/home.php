@@ -63,7 +63,7 @@
     <div class="container availability-form mt-4">
         <div class="row">
             <div class="col-lg-12 bg-white shadow p-4 rounded">
-                <h5 class="mb-4">Check Room Availability for Booking</h5>
+                <h5 class="mb-4"style="color:#C80F2F;">Check Room Availability for Booking</h5>
                 <form>
                     <div class="row align-items-end">
                         <div class="col-lg-3 mb-3">
