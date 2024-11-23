@@ -15,9 +15,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../public/styles.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
 </head>
 
 <body>
+
+
     <!-- Navbar -->
     <nav id="nav-bar" class="navbar navbar-expand-lg navbar-light bg-white px-lg-3 py-lg-2 shadow-sm sticky-top">
         <div class="container-fluid">
@@ -28,15 +37,18 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="index.php">Home</a>
+                        <a class="nav-link me-2" href="#home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="rooms.php">Rooms</a>
+                        <a class="nav-link me-2" href="#rooms">Rooms</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="contact.php">Contact</a>
+                        <a class="nav-link me-2" href="#contact">Contact</a>
                     </li>
                 </ul>
+
+
+
                 <div class="d-flex">
                     <!-- Login Button -->
                     <button type="button" class="btn btn-outline-success shadow-none me-lg-2 me-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
@@ -134,7 +146,7 @@
         </div>
     </div>
 
-  
+
 
     <script>
         // Initialize Flatpickr
