@@ -20,7 +20,7 @@
 <body class="bg-light">
 
     <!-- Room Section Header -->
-    <h2 class="mt-5 pl-4 mb-4 text-center fw-bold h-font">Our Rooms</h2>
+    <h2 class="mt-5 pl-4 mb-4 text-center fw-bold h-font"style="color:#C80F2F;">Our Rooms</h2>
     <div class="container">
 
         <div class="row">

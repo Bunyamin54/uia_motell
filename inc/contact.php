@@ -40,41 +40,16 @@
                 </iframe>
             </div>
 
-
-
-
-
-
-
             <!-- Contact Information -->
             <div class="col-lg-6 col-md-12 mb-4">
                 <div class="bg-white p-4 rounded shadow">
-                    <h5 class="fw-bold">Address</h5>
+                    <h5 class="fw-bold"style="color:#C80F2F;">Address</h5>
                     <p><i class="bi bi-geo-alt"></i> Campus Kristiansand, Universitetsveien 25, 4630 Kristiansand, Norge</p>
 
                     <h5 class="fw-bold">Phone</h5>
                     <p><a href="tel:+1234567890" class="text-decoration-none text-dark"><i class="bi bi-telephone"></i> +123 456 7890</a></p>
 
-                    <h5 class="fw-bold">Follow Us</h5>
-                    <div class="d-flex">
-                        <a href="https://www.facebook.com/" target="_blank" class="me-3" style="color: #1877F2; font-size: 1.5rem;">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="https://www.instagram.com/" target="_blank" class="me-3" style="color: #E4405F; font-size: 1.5rem;">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="https://www.youtube.com/" target="_blank" class="me-3" style="color: #FF0000; font-size: 1.5rem;">
-                            <i class="bi bi-youtube"></i>
-                        </a>
-
-                        <a href="https://twitter.com/" target="_blank" class="me-3" style="color: #1DA1F2; font-size: 1.5rem;">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-
-
-
-                    </div>
-
+                  
 
                 </div>
             </div>
