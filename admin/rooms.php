@@ -1,5 +1,4 @@
-   //* rooms page for admin
-   <?php
+<?php
 session_start();
 
 // Ensure only admin users can access
@@ -17,25 +16,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("INSERT INTO rooms (name, type, capacity, status) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssis", $_POST['room_name'], $_POST['room_type'], $_POST['capacity'], $_POST['status']);
         $stmt->execute();
+
+        // Set toast message
+        $_SESSION['message'] = "Room added successfully!";
+        $_SESSION['message_type'] = "success";
     } elseif (isset($_POST['delete_room'])) {
         $stmt = $conn->prepare("DELETE FROM rooms WHERE id = ?");
         $stmt->bind_param("i", $_POST['room_id']);
         $stmt->execute();
+
+        // Set toast message
+        $_SESSION['message'] = "Room deleted successfully!";
+        $_SESSION['message_type'] = "danger";
     }
+    header('Location: rooms.php');
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Rooms</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Manage Rooms</h1>
+
+        <!-- Toast Notifications -->
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast show text-bg-<?= $_SESSION['message_type']; ?>" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?= $_SESSION['message']; ?>
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
+        <?php endif; ?>
+
+        <!-- Add Room Form -->
         <form action="rooms.php" method="POST" class="mt-4">
             <h3>Add New Room</h3>
             <div class="mb-3">
@@ -59,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" name="add_room" class="btn btn-success">Add Room</button>
         </form>
+
         <h3 class="mt-5">All Rooms</h3>
         <table class="table mt-3">
             <thead>
@@ -92,5 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </table>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Automatically hide toast after 3 seconds
+        const toastEl = document.querySelector('.toast');
+        if (toastEl) {
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 3000);
+        }
+    </script>
 </body>
+
 </html>

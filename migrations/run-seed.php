@@ -25,7 +25,7 @@ try {
         echo "Users already exist. Skipping users seed...<br>";
     }
 
-    // Odaları seed et
+    // Rooms seed page
     $checkRooms = $pdo->query("SELECT COUNT(*) FROM rooms")->fetchColumn();
     if ($checkRooms == 0) {
         $pdo->exec("
@@ -39,7 +39,7 @@ try {
         echo "Rooms already exist. Skipping rooms seed...<br>";
     }
 
-    // Rezervasyonları seed et
+    // Bookings seed page
     $checkBookings = $pdo->query("SELECT COUNT(*) FROM bookings")->fetchColumn();
     if ($checkBookings == 0) {
         $pdo->exec("
@@ -52,7 +52,7 @@ try {
         echo "Bookings already exist. Skipping bookings seed...<br>";
     }
 
-    // Yorumları seed et
+    // Reviews seed page
     $checkReviews = $pdo->query("SELECT COUNT(*) FROM reviews")->fetchColumn();
     if ($checkReviews == 0) {
         $pdo->exec("
@@ -76,11 +76,11 @@ try {
         '/images/home/5.jpg',
         '/images/home/6.jpg'
     ];
-    
+
     foreach ($images as $image) {
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM homepage_images WHERE image_path = :image_path");
         $stmt->execute([':image_path' => $image]);
-    
+
         if ($stmt->fetchColumn() == 0) {
             $insertStmt = $pdo->prepare("INSERT INTO homepage_images (image_path) VALUES (:image_path)");
             $insertStmt->execute([':image_path' => $image]);
@@ -88,6 +88,25 @@ try {
         } else {
             echo "$image already exists. Skipping...<br>";
         }
+    }
+
+    // **Seed Settings**
+    $defaultSettings = [
+        ['name' => 'site_name', 'value' => 'Uia Motell'],
+        ['name' => 'admin_email', 'value' => 'admin@uia.com']
+    ];
+    
+    foreach ($defaultSettings as $setting) {
+        $stmt = $pdo->prepare("
+            INSERT INTO settings (name, value) 
+            VALUES (:name, :value) 
+            ON DUPLICATE KEY UPDATE value = VALUES(value)
+        ");
+        $stmt->execute([
+            ':name' => $setting['name'],
+            ':value' => $setting['value']
+        ]);
+        echo "Inserted or updated {$setting['name']} in settings.<br>";
     }
     
 

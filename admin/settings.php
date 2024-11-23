@@ -8,19 +8,48 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     exit;
 }
 
-// Save settings to a configuration file
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $settings = [
-        'site_name' => $_POST['site_name'],
-        'admin_email' => $_POST['admin_email'],
-    ];
-    file_put_contents('../config/site_settings.json', json_encode($settings));
-    echo "<script>alert('Settings updated successfully!');</script>";
+require_once '../config/config.php';
+
+try {
+    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+    $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 
-// Load settings
-$settings = json_decode(file_get_contents('../config/site_settings.json'), true);
+// Save settings to the database
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $site_name = $_POST['site_name'];
+    $admin_email = $_POST['admin_email'];
+
+    $stmt = $pdo->prepare("
+        INSERT INTO settings (name, value) 
+        VALUES ('site_name', :site_name), ('admin_email', :admin_email)
+        ON DUPLICATE KEY UPDATE value = VALUES(value)
+    ");
+    $stmt->execute([
+        ':site_name' => $site_name,
+        ':admin_email' => $admin_email
+    ]);
+
+    $_SESSION['message'] = "Settings updated successfully!";
+    $_SESSION['message_type'] = 'success';
+
+    header('Location: settings.php');
+    exit;
+}
+
+// Load settings from the database
+$stmt = $pdo->query("SELECT name, value FROM settings");
+$settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,14 +62,22 @@ $settings = json_decode(file_get_contents('../config/site_settings.json'), true)
 <body>
     <div class="container mt-5">
         <h1>Edit Site Settings</h1>
+
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-<?= $_SESSION['message_type'] ?>" role="alert">
+                <?= $_SESSION['message'] ?>
+            </div>
+            <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
+        <?php endif; ?>
+
         <form method="POST" class="mt-4">
             <div class="mb-3">
                 <label for="site_name" class="form-label">Site Name</label>
-                <input type="text" name="site_name" value="<?php echo $settings['site_name']; ?>" class="form-control" required>
+                <input type="text" name="site_name" value="<?= htmlspecialchars($settings['site_name'] ?? '') ?>" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="admin_email" class="form-label">Admin Email</label>
-                <input type="email" name="admin_email" value="<?php echo $settings['admin_email']; ?>" class="form-control" required>
+                <input type="email" name="admin_email" value="<?= htmlspecialchars($settings['admin_email'] ?? '') ?>" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-warning">Save Settings</button>
         </form>

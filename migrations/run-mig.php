@@ -55,11 +55,18 @@ try {
             FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
         );
 
-                CREATE TABLE IF NOT EXISTS homepage_images (
+              CREATE TABLE IF NOT EXISTS homepage_images (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 image_path VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+
+                CREATE TABLE IF NOT EXISTS settings (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL UNIQUE,
+                    value TEXT NOT NULL
+                );
+
 
 
     ");
