@@ -20,7 +20,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
 
 <body>
     <div class="container mt-5">
-        <h1>Welcome to Admin Dashboard</h1>
+        <h1 class="text-danger">Welcome to Admin Dashboard</h1>
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="card">

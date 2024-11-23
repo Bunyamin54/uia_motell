@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <div class="container mt-5">
-        <h1>Manage Rooms</h1>
+        <h1 class="text-success"> Manage Rooms</h1>
 
         <!-- Toast Notifications -->
         <?php if (isset($_SESSION['message'])): ?>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Add Room Form -->
         <form action="rooms.php" method="POST" class="mt-4">
-            <h3>Add New Room</h3>
+            <h3 class="text-warning">Add New Room</h3>
             <div class="mb-3">
                 <input type="text" name="room_name" placeholder="Room Name" class="form-control" required>
             </div>

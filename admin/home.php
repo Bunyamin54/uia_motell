@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['image_id'])) {
 
 <body>
     <div class="container mt-5">
-        <h1>Edit Home Page Images</h1>
+        <h1 class="text-success">Edit Home Page Images</h1>
 
         <!-- Toast for notifications -->
         <?php if (isset($_SESSION['message'])): ?>

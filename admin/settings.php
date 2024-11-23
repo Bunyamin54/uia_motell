@@ -61,7 +61,7 @@
 
   <body>
       <div class="container mt-5">
-          <h1>Edit Site Settings</h1>
+          <h1 class="text-success">Edit Site Settings</h1>
 
           <!-- Toast Notification -->
           <?php if (isset($_SESSION['message'])): ?>
@@ -91,10 +91,10 @@
               <button type="submit" class="btn btn-warning">Save Settings</button>
           </form>
 
-          <div class="card border-0 shadow-none mb-4" style="min-width: 100%;">
+          <div class="card border rounded shadow mb-4" style="margin-top: 40px;">
               <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-3">
-                      <h4 class="card-title m-0">Shutdown Website</h4>
+                      <h4 class="card-title text-danger m-0">Shutdown Website</h4>
                       <div class="form-check form-switch">
                           <input
                               onchange="toggleShutdown(this.checked)"
@@ -109,6 +109,7 @@
                   </p>
               </div>
           </div>
+
 
           <!-- Toast Container -->
           <div class="toast-container position-fixed top-0 end-0 p-3"></div>
