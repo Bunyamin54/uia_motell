@@ -1,7 +1,8 @@
 <?php
-require_once './config/config.php';
+require_once '../config/config.php';
 
 try {
+    // PDO bağlantısı
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -9,9 +10,9 @@ try {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
 
-    echo "Database connected successfully!";
+    echo "Database connected successfully!<br>";
 
-    // Seed users only if the table is empty
+    // Kullanıcıları seed et
     $checkUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
     if ($checkUsers == 0) {
         $pdo->exec("
@@ -19,12 +20,12 @@ try {
             ('Admin', 'admin@example.com', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'admin'),
             ('Guest', 'guest@example.com', '" . password_hash('guest123', PASSWORD_DEFAULT) . "', 'guest');
         ");
-        echo "Users seeded successfully!\n";
+        echo "Users seeded successfully!<br>";
     } else {
-        echo "Users already seeded. Skipping...\n";
+        echo "Users already exist. Skipping users seed...<br>";
     }
 
-    // Seed rooms only if the table is empty
+    // Odaları seed et
     $checkRooms = $pdo->query("SELECT COUNT(*) FROM rooms")->fetchColumn();
     if ($checkRooms == 0) {
         $pdo->exec("
@@ -33,12 +34,12 @@ try {
             ('Room 102', 'Double', 2, 'available'),
             ('Suite 201', 'Suite', 4, 'available');
         ");
-        echo "Rooms seeded successfully!\n";
+        echo "Rooms seeded successfully!<br>";
     } else {
-        echo "Rooms already seeded. Skipping...\n";
+        echo "Rooms already exist. Skipping rooms seed...<br>";
     }
 
-    // Seed bookings (example data)
+    // Rezervasyonları seed et
     $checkBookings = $pdo->query("SELECT COUNT(*) FROM bookings")->fetchColumn();
     if ($checkBookings == 0) {
         $pdo->exec("
@@ -46,12 +47,12 @@ try {
             (1, 1, '2024-12-01', '2024-12-05', 'booked'),
             (2, 2, '2024-12-10', '2024-12-12', 'booked');
         ");
-        echo "Bookings seeded successfully!\n";
+        echo "Bookings seeded successfully!<br>";
     } else {
-        echo "Bookings already seeded. Skipping...\n";
+        echo "Bookings already exist. Skipping bookings seed...<br>";
     }
 
-    // Seed reviews (example data)
+    // Yorumları seed et
     $checkReviews = $pdo->query("SELECT COUNT(*) FROM reviews")->fetchColumn();
     if ($checkReviews == 0) {
         $pdo->exec("
@@ -59,9 +60,9 @@ try {
             (2, 1, 5, 'Amazing stay! Highly recommended.'),
             (1, 3, 4, 'Spacious and luxurious, but a bit pricey.');
         ");
-        echo "Reviews seeded successfully!\n";
+        echo "Reviews seeded successfully!<br>";
     } else {
-        echo "Reviews already seeded. Skipping...\n";
+        echo "Reviews already exist. Skipping reviews seed...<br>";
     }
 
     echo "Seeding completed successfully!";

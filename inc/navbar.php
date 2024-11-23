@@ -51,7 +51,7 @@
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="login-form">
+                <form id="login-form" action="../admin/login.php" method="POST">
                     <div class="modal-header">
                         <i class="bi bi-person-lines-fill fs-3 me-2"></i>
                         <h5 class="modal-title" id="loginModalLabel">Login</h5>
@@ -134,9 +134,7 @@
         </div>
     </div>
 
-    <!-- Include Flatpickr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
 
     <script>
         // Initialize Flatpickr

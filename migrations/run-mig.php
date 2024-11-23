@@ -1,9 +1,8 @@
 <?php
-require_once './config/config.php';
-
+require_once '../config/config.php';
 
 try {
-    // Create PDO instance using the database credentials
+    // PDO bağlantısı
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -11,7 +10,9 @@ try {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
 
-    // Migration queries to create tables
+    echo "Database connected successfully!<br>";
+
+    // Migration (Tabloları oluştur)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
