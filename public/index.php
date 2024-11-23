@@ -53,6 +53,13 @@
     <div id="rooms">
         <?php include '../inc/rooms.php'; ?>
     </div>
+ 
+    <!-- Reviews Section -->
+    <div id="reviews">
+        <?php include '../inc/reviews.php'; ?>
+    </div>
+
+
 
     <!-- Contact Section -->
     <div id="contact">
