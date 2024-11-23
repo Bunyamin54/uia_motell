@@ -1,75 +1,134 @@
-<div class="container-fluid px-lg-4 mt-4">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Booking</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../public/styles.css">
+
+    <style>
+        .custom-bg {
+            background-color: #007BFF;
+            border: none;
+        }
+
+        .custom-bg:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
     <!-- Swiper Section -->
-    <div class="swiper swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/2.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/3.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/4.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/5.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/6.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-            <div class="swiper-slide">
-                <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;" />
-            </div>
-        </div>
-      
-        <div class="swiper-pagination"></div>
-    </div>
-</div>
-
-<!-- Availability Form Section -->
-<div class="container availability-form mt-4">
-    <div class="row">
-        <div class="col-lg-12 bg-white shadow p-4 rounded">
-            <h5 class="mb-4">Check Room Availability for Booking</h5>
-            <form>
-                <div class="row align-items-end">
-                    <div class="col-lg-3 mb-3">
-                        <label for="checkInDatePicker" class="form-label" style="font-weight:500;">Check-In</label>
-                        <input id="checkInDatePicker" type="text" class="form-control shadow-none">
-                    </div>
-                    <div class="col-lg-3 mb-3">
-                        <label for="checkOutDatePicker" class="form-label" style="font-weight:500;">Check-Out</label>
-                        <input id="checkOutDatePicker" type="text" class="form-control shadow-none">
-                    </div>
-                    <div class="col-lg-3 mb-3">
-                        <label class="form-label" style="font-weight:500;">Adults</label>
-                        <select class="form-select shadow-none">
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-2 mb-3">
-                        <label class="form-label" style="font-weight:500;">Children</label>
-                        <select class="form-select shadow-none">
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-lg-1 mb-lg-3 mt-2">
-                        <button type="submit" class="btn text-white shadow-none custom-bg">Submit</button>
-                    </div>
+    <div class="container-fluid px-lg-4 mt-4">
+        <div class="swiper swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
                 </div>
-            </form>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/2.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/3.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/4.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/5.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/6.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+                <div class="swiper-slide">
+                    <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
-</div>
 
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<!-- Custom JS -->
-<script src="../public/scripts.js"></script>
+    <!-- Availability Form Section -->
+    <div class="container availability-form mt-4">
+        <div class="row">
+            <div class="col-lg-12 bg-white shadow p-4 rounded">
+                <h5 class="mb-4">Check Room Availability for Booking</h5>
+                <form>
+                    <div class="row align-items-end">
+                        <div class="col-lg-3 mb-3">
+                            <label for="checkInDatePicker" class="form-label" style="font-weight:500;">Check-In</label>
+                            <input id="checkInDatePicker" type="text" class="form-control shadow-none" placeholder="Select Check-In Date">
+                        </div>
+                        <div class="col-lg-3 mb-3">
+                            <label for="checkOutDatePicker" class="form-label" style="font-weight:500;">Check-Out</label>
+                            <input id="checkOutDatePicker" type="text" class="form-control shadow-none" placeholder="Select Check-Out Date">
+                        </div>
+                        <div class="col-lg-3 mb-3">
+                            <label class="form-label" style="font-weight:500;">Adults</label>
+                            <select class="form-select shadow-none">
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 mb-3">
+                            <label class="form-label" style="font-weight:500;">Children</label>
+                            <select class="form-select shadow-none">
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-lg-1 mb-lg-3 mt-2">
+                            <button type="submit" class="btn text-white shadow-none custom-bg">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../public/scripts.js"></script>
+
+    <script>
+        $(function () {
+            $('#checkInDatePicker').datepicker({
+                showButtonPanel: true,
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+                onSelect: function (selectedDate) {
+                    const minCheckOutDate = new Date(selectedDate);
+                    minCheckOutDate.setDate(minCheckOutDate.getDate() + 1);
+                    $('#checkOutDatePicker').datepicker('option', 'minDate', minCheckOutDate);
+                }
+            });
+
+            $('#checkOutDatePicker').datepicker({
+                showButtonPanel: true,
+                dateFormat: 'dd-mm-yy',
+                minDate: 1
+            });
+        });
+    </script>
+
+</body>
+
+</html>
