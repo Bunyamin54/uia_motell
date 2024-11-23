@@ -134,3 +134,12 @@ input[type="number"] {
 .ui-datepicker-buttonpane .ui-button {
   margin: 0.5em; /* Space out action buttons */
 }
+
+.swiper-wrapper {
+  display: flex;
+}
+.swiper-slide {
+  flex-shrink: 0;
+  width: auto; /* or a fixed width like 300px */
+  margin-right: 15px; /* Space between slides */
+}
