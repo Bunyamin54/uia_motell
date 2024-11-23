@@ -65,6 +65,33 @@ try {
         echo "Reviews already exist. Skipping reviews seed...<br>";
     }
 
+
+
+    // Seed Homepage Images
+    $images = [
+        '/images/home/1.jpeg',
+        '/images/home/2.jpeg',
+        '/images/home/3.jpeg',
+        '/images/home/4.jpeg',
+        '/images/home/5.jpg',
+        '/images/home/6.jpg'
+    ];
+    
+    foreach ($images as $image) {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM homepage_images WHERE image_path = :image_path");
+        $stmt->execute([':image_path' => $image]);
+    
+        if ($stmt->fetchColumn() == 0) {
+            $insertStmt = $pdo->prepare("INSERT INTO homepage_images (image_path) VALUES (:image_path)");
+            $insertStmt->execute([':image_path' => $image]);
+            echo "Inserted $image into homepage_images.<br>";
+        } else {
+            echo "$image already exists. Skipping...<br>";
+        }
+    }
+    
+
+
     echo "Seeding completed successfully!";
 } catch (PDOException $e) {
     echo "Seeding failed: " . $e->getMessage();

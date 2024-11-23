@@ -54,6 +54,14 @@ try {
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
         );
+
+                CREATE TABLE IF NOT EXISTS homepage_images (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                image_path VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
+
     ");
 
     echo "Migration completed successfully!";

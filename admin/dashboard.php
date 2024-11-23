@@ -26,7 +26,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                 <div class="card">
                     <div class="card-header bg-primary text-white">Edit Home Page Images</div>
                     <div class="card-body">
-                        <a href="edit_images.php" class="btn btn-primary">Edit Images</a>
+                        <a href="home.php" class="btn btn-primary">Edit Images</a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                 <div class="card">
                     <div class="card-header bg-success text-white">Manage Rooms</div>
                     <div class="card-body">
-                        <a href="manage_rooms.php" class="btn btn-success">Manage Rooms</a>
+                        <a href="rooms.php" class="btn btn-success">Manage Rooms</a>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                 <div class="card">
                     <div class="card-header bg-warning text-white">Site Settings</div>
                     <div class="card-body">
-                        <a href="site_settings.php" class="btn btn-warning">Edit Settings</a>
+                        <a href="settings.php" class="btn btn-warning">Edit Settings</a>
                     </div>
                 </div>
             </div>
