@@ -35,7 +35,8 @@
                             <h6 class="mb-1">Room Details</h6>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">1 Bed</span>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">1 Bathroom</span>
-                            <span class="badge text-bg-light text-success mb-3 text-wrap">Balcony</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">Bright Workspace</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">Garden View</span>
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
@@ -73,6 +74,7 @@
                             <span class="badge text-bg-light text-success mb-3 text-wrap">2 Beds</span>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">1 Bathroom</span>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">Balcony</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">Modern Artistic Decor</span>
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
@@ -110,6 +112,7 @@
                             <span class="badge text-bg-light text-success mb-3 text-wrap">3 Beds</span>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">2 Bathrooms</span>
                             <span class="badge text-bg-light text-success mb-3 text-wrap">Balcony</span>
+                            <span class="badge text-bg-light text-success mb-3 text-wrap">Scenic City View</span>
                         </div>
                         <div class="facilities mb-4">
                             <h6 class="mb-1">Facilities</h6>
