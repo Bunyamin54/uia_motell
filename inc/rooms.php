@@ -54,8 +54,8 @@
                         </div>
 
                         <div class="d-flex justify-content-evenly mb-2">
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
+                            <a href="#" class="btn btn-sm text-danger custom-bg shadow-none">Book Now</a>
+                            <a href="#" class="btn btn-sm text-success custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>
@@ -91,8 +91,8 @@
                         </div>
 
                         <div class="d-flex justify-content-evenly mb-2">
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
+                            <a href="#" class="btn btn-sm text-danger custom-bg shadow-none">Book Now</a>
+                            <a href="#" class="btn btn-sm text-success custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>
@@ -128,8 +128,8 @@
                         </div>
 
                         <div class="d-flex justify-content-evenly mb-2">
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">More Info>>></a>
+                            <a href="#" class="btn btn-sm text-danger custom-bg shadow-none">Book Now</a>
+                            <a href="#" class="btn btn-sm text-success custom-bg shadow-none">More Info>>></a>
                         </div>
                     </div>
                 </div>
