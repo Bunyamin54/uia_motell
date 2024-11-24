@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-include('../config/config.php'); // Veritabanı bağlantısı
+include('../config/config.php'); // Database connection
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = $user;
         if ($user['role'] === 'admin') {
-            header('Location: /uia_motell/admin/dashboard.php'); // Admin dashboard'a yönlendirme
+            header('Location: /uia_motell/admin/dashboard.php'); // admin page after login
         } else {
-            header('Location: /uia_motell/index.php'); // Normal kullanıcı ana sayfaya
+            header('Location: /uia_motell/index.php'); // user page after login
         }
         exit;
     } else {
