@@ -21,9 +21,9 @@
             
 
             <!-- Contact Section -->
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-4 col-md-12 mb-8">
                 
-                <h5 class="fw-bold"style="color:#C80F2F;" >Follow Us</h5>
+                <h5 class="fw-bold mb-4"style="color:#C80F2F;" >Follow Us</h5>
                     <div class="d-flex">
                         <a href="https://www.facebook.com/" target="_blank" class="me-3" style="color: #1877F2; font-size: 1.5rem;">
                             <i class="bi bi-facebook"></i>
