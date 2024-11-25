@@ -23,26 +23,34 @@
     <script>
         function loadRooms() {
             fetch('../admin/ajax_rooms.php?action=list')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const container = document.getElementById('roomContainer');
                     container.innerHTML = '';
                     data.forEach(room => {
                         const imagePath = room.image ? `../public/images/rooms/${room.image}` : '../public/images/default-placeholder.png';
+                        const details = room.details ? room.details.split(',').map(detail => `<span class="badge bg-success text-wrap">${detail}</span>`).join(' ') : 'No details available';
+                        const facilities = room.facilities ? room.facilities.split(',').map(facility => `<span class="badge bg-success text-wrap">${facility}</span>`).join(' ') : 'No facilities available';
+
                         container.innerHTML += `
                             <div class="col-lg-4 col-md-6 my-3">
                                 <div class="card border-0 shadow" style="max-width: 350px; margin:auto;">
                                     <img src="${imagePath}" class="card-img-top" alt="Room Image">
                                     <div class="card-body">
                                         <h5>${room.name}</h5>
-                                        <h5 class="mb-4">From $${room.price} per night</h5>
+                                        <h5 class="mb-4">From $${room.price || 'N/A'} per night</h5>
                                         <div class="features mb-4">
                                             <h6 class="mb-1">Room Details</h6>
-                                            <span class="badge bg-success">${room.details}</span>
+                                            ${details}
                                         </div>
                                         <div class="facilities mb-4">
                                             <h6 class="mb-1">Facilities</h6>
-                                            <span class="badge bg-success">${room.facilities}</span>
+                                            ${facilities}
                                         </div>
                                         <div class="d-flex justify-content-evenly mb-2">
                                             <a href="#" class="btn btn-sm btn-danger">Book Now</a>
@@ -53,7 +61,11 @@
                             </div>`;
                     });
                 })
-                .catch(error => console.error('Error loading rooms:', error));
+                .catch(error => {
+                    console.error('Error loading rooms:', error);
+                    const container = document.getElementById('roomContainer');
+                    container.innerHTML = `<p class="text-center text-danger">Failed to load rooms. Please try again later.</p>`;
+                });
         }
         document.addEventListener('DOMContentLoaded', loadRooms);
     </script>
