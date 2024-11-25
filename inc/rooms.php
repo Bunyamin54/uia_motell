@@ -34,8 +34,8 @@
                     container.innerHTML = '';
                     data.forEach(room => {
                         const imagePath = room.image ? `../public/images/rooms/${room.image}` : '../public/images/default-placeholder.png';
-                        const details = room.details ? room.details.split(',').map(detail => `<span class="badge bg-success text-wrap">${detail}</span>`).join(' ') : 'No details available';
-                        const facilities = room.facilities ? room.facilities.split(',').map(facility => `<span class="badge bg-success text-wrap">${facility}</span>`).join(' ') : 'No facilities available';
+                        const details = room.details ? room.details.split(',').map(detail => `<span class="badge text-success text-wrap">${detail}</span>`).join(' ') : 'No details available';
+                        const facilities = room.facilities ? room.facilities.split(',').map(facility => `<span class="badge text-success text-wrap">${facility}</span>`).join(' ') : 'No facilities available';
 
                         container.innerHTML += `
                             <div class="col-lg-4 col-md-6 my-3">

@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <input type="number"  name="price" id="price"  placeholder="Price (per night)" class="form-control" required>
+                <input type="number" name="price" id="price" placeholder="Price (per night)" class="form-control" required>
             </div>
             <div class="mb-3">
                 <input type="number" name="capacity" placeholder="Capacity" class="form-control" required>
@@ -149,8 +149,35 @@
 
                 data.forEach(room => {
                     const imagePath = room.image ? `../public/images/rooms/${room.image}` : '../public/images/default-placeholder.png';
+
+                    // Parse facilities and details (assuming they're comma-separated strings)
+                    const details = room.details ?
+                        room.details.split(',').map(detail => {
+                            const trimmedDetail = detail.trim();
+                            const icon = trimmedDetail.toLowerCase().includes('bed') ? 'bi-bed' :
+                                trimmedDetail.toLowerCase().includes('bathroom') ? 'bi-shower' :
+                                trimmedDetail.toLowerCase().includes('view') ? 'bi-eye' :
+                                trimmedDetail.toLowerCase().includes('workspace') ? 'bi-laptop' : 'bi-check';
+                            return `<span class="badge text-bg-light text-primary mb-1 me-1"><i class="bi ${icon}"></i> ${trimmedDetail}</span>`;
+                        }).join('') :
+                        '';
+
+                    const facilities = room.facilities ?
+                        room.facilities.split(',').map(facility => {
+                            const trimmedFacility = facility.trim();
+                            const icon = trimmedFacility.toLowerCase().includes('wi-fi') ? 'bi-wifi' :
+                                trimmedFacility.toLowerCase().includes('tv') ? 'bi-tv' :
+                                trimmedFacility.toLowerCase().includes('ac') ? 'bi-snow' :
+                                trimmedFacility.toLowerCase().includes('workspace') ? 'bi-laptop' :
+                                trimmedFacility.toLowerCase().includes('coffee') ? 'bi-cup-hot' :
+                                trimmedFacility.toLowerCase().includes('mini bar') ? 'bi-cup-straw' : 'bi-check';
+                            return `<span class="badge text-bg-light text-success mb-1 me-1"><i class="bi ${icon}"></i> ${trimmedFacility}</span>`;
+                        }).join('') :
+                        '';
+
+
                     container.innerHTML += `
-                    <div class="card mb-3">
+                        <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="${imagePath}" class="img-fluid rounded-start" alt="Room Image">
@@ -158,19 +185,28 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">${room.name}</h5>
-                                    <p class="card-text">${room.type} - ${room.capacity} beds</p>
-                                    <p class="card-text">Status: 
-                                        <span class="badge bg-${room.status === 'available' ? 'success' : 'danger'}">
-                                            ${room.status}
-                                        </span>
-                                    </p>
-                                    <button class="btn btn-primary btn-sm" onclick="editRoom(${room.id})">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteRoom(${room.id})">Delete</button>
+                                    <h6 class="mb-4">From $${room.price} per night</h6>
+
+                                    <div class="features mb-4">
+                                        <h6 class="mb-1">Room Details</h6>
+                                        ${details}
+                                    </div>
+
+                                    <div class="facilities mb-4">
+                                        <h6 class="mb-1">Facilities</h6>
+                                        ${facilities}
+                                    </div>
+
+                                    <div class="d-flex justify-content-evenly mb-2">
+                                        <button class="btn btn-primary btn-sm" onclick="editRoom(${room.id})">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteRoom(${room.id})">Delete</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
-                });
+                    </div>
+                    `;
+                                    });
             } catch (error) {
                 console.error('Error loading rooms:', error);
                 showToast(`Error loading rooms: ${error.message}`, 'danger');
