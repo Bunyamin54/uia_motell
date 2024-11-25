@@ -21,7 +21,7 @@
 
     <!-- Contact Section -->
     <div class="container mt-5">
-        <h2 class="text-center mb-4 fw-bold h-font">Contact Us</h2>
+        <h2 class="text-center mb-4 fw-bold h-font" style="color:#C80F2F"; >Contact Us</h2>
 
         <div class="row">
 
