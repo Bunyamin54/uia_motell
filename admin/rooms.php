@@ -1,70 +1,21 @@
-<?php
-session_start();
-
-// Ensure only admin users can access
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-    header('Location: index.php');
-    exit;
-} 
-
-// Include database connection
-include('../config/config.php');
-
-// Handle adding or deleting rooms
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_room'])) {
-        $stmt = $conn->prepare("INSERT INTO rooms (name, type, capacity, status) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssis", $_POST['room_name'], $_POST['room_type'], $_POST['capacity'], $_POST['status']);
-        $stmt->execute();
-
-        // Set toast message
-        $_SESSION['message'] = "Room added successfully!";
-        $_SESSION['message_type'] = "success";
-    } elseif (isset($_POST['delete_room'])) {
-        $stmt = $conn->prepare("DELETE FROM rooms WHERE id = ?");
-        $stmt->bind_param("i", $_POST['room_id']);
-        $stmt->execute();
-
-        // Set toast message
-        $_SESSION['message'] = "Room deleted successfully!";
-        $_SESSION['message_type'] = "danger";
-    }
-    header('Location: rooms.php');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Rooms</title>
+    <title>Admin - Manage Rooms</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/styles.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-success"> Manage Rooms</h1>
-
-        <!-- Toast Notifications -->
-        <?php if (isset($_SESSION['message'])): ?>
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div class="toast show text-bg-<?= $_SESSION['message_type']; ?>" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?= $_SESSION['message']; ?>
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-            <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
-        <?php endif; ?>
+        <h1 class="text-success">Manage Rooms</h1>
+        <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 
         <!-- Add Room Form -->
-        <form action="rooms.php" method="POST" class="mt-4">
+        <form id="addRoomForm" enctype="multipart/form-data" class="mt-4">
             <h3 class="text-warning">Add New Room</h3>
             <div class="mb-3">
                 <input type="text" name="room_name" placeholder="Room Name" class="form-control" required>
@@ -77,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
             <div class="mb-3">
+                <input type="number" name="price" id="price" placeholder="Price (per night)" class="form-control" required>
+            </div>
+            <div class="mb-3">
                 <input type="number" name="capacity" placeholder="Capacity" class="form-control" required>
             </div>
             <div class="mb-3">
@@ -85,51 +39,275 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="unavailable">Unavailable</option>
                 </select>
             </div>
-            <button type="submit" name="add_room" class="btn btn-success">Add Room</button>
+            <div class="mb-3">
+                <textarea name="details" placeholder="Room Details" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <textarea name="facilities" placeholder="Facilities" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <input type="file" name="room_image" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Add Room</button>
         </form>
 
         <h3 class="mt-5">All Rooms</h3>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $result = $conn->query("SELECT * FROM rooms");
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                        <td>{$row['name']}</td>
-                        <td>{$row['type']}</td>
-                        <td>{$row['capacity']}</td>
-                        <td>{$row['status']}</td>
-                        <td>
-                            <form method='POST' style='display:inline-block;'>
-                                <input type='hidden' name='room_id' value='{$row['id']}'>
-                                <button type='submit' name='delete_room' class='btn btn-danger'>Delete</button>
-                            </form>
-                        </td>
-                    </tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+        <div id="roomContainer" class="mt-3"></div>
     </div>
+
+    <!-- Edit Room Modal -->
+    <div class="modal fade" id="editRoomModal" tabindex="-1" aria-labelledby="editRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editRoomForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editRoomModalLabel">Edit Room</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="room_id" id="edit_room_id">
+                        <div class="mb-3">
+                            <label for="edit_room_name" class="form-label">Room Name</label>
+                            <input type="text" name="room_name" id="edit_room_name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_room_type" class="form-label">Room Type</label>
+                            <select name="room_type" id="edit_room_type" class="form-select">
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_price" class="form-label">Price (per night)</label>
+                            <input type="number" name="price" id="edit_price" class="form-control" placeholder="e.g., 250" min="1" step="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_capacity" class="form-label">Capacity</label>
+                            <input type="number" name="capacity" id="edit_capacity" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_status" class="form-label">Status</label>
+                            <select name="status" id="edit_status" class="form-select">
+                                <option value="available">Available</option>
+                                <option value="unavailable">Unavailable</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="details" class="form-label">Room Details</label>
+                            <textarea name="details" id="details" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="facilities" class="form-label">Facilities</label>
+                            <textarea name="facilities" id="facilities" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_room_image" class="form-label">Room Image</label>
+                            <input type="file" name="room_image" id="edit_room_image" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Automatically hide toast after 3 seconds
-        const toastEl = document.querySelector('.toast');
-        if (toastEl) {
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast text-bg-${type} show mb-2`;
+            toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>`;
+            toastContainer.appendChild(toast);
             setTimeout(() => {
-                toastEl.classList.remove('show');
+                toast.remove();
             }, 3000);
         }
+
+        // Load rooms
+        async function loadRooms() {
+            try {
+                const response = await fetch('ajax_rooms.php?action=list');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                if (!Array.isArray(data)) throw new Error(data.message || 'Unexpected response format.');
+
+                const container = document.getElementById('roomContainer');
+                container.innerHTML = '';
+
+                data.forEach(room => {
+                    const imagePath = room.image ? `../public/images/rooms/${room.image}` : '../public/images/default-placeholder.png';
+
+                    // Parse facilities and details (assuming they're comma-separated strings)
+                    const details = room.details ?
+                        room.details.split(',').map(detail => {
+                            const trimmedDetail = detail.trim();
+                            const icon = trimmedDetail.toLowerCase().includes('bed') ? 'bi-bed' :
+                                trimmedDetail.toLowerCase().includes('bathroom') ? 'bi-shower' :
+                                trimmedDetail.toLowerCase().includes('view') ? 'bi-eye' :
+                                trimmedDetail.toLowerCase().includes('workspace') ? 'bi-laptop' : 'bi-check';
+                            return `<span class="badge text-bg-light text-primary mb-1 me-1"><i class="bi ${icon}"></i> ${trimmedDetail}</span>`;
+                        }).join('') :
+                        '';
+
+                    const facilities = room.facilities ?
+                        room.facilities.split(',').map(facility => {
+                            const trimmedFacility = facility.trim();
+                            const icon = trimmedFacility.toLowerCase().includes('wi-fi') ? 'bi-wifi' :
+                                trimmedFacility.toLowerCase().includes('tv') ? 'bi-tv' :
+                                trimmedFacility.toLowerCase().includes('ac') ? 'bi-snow' :
+                                trimmedFacility.toLowerCase().includes('workspace') ? 'bi-laptop' :
+                                trimmedFacility.toLowerCase().includes('coffee') ? 'bi-cup-hot' :
+                                trimmedFacility.toLowerCase().includes('mini bar') ? 'bi-cup-straw' : 'bi-check';
+                            return `<span class="badge text-bg-light text-success mb-1 me-1"><i class="bi ${icon}"></i> ${trimmedFacility}</span>`;
+                        }).join('') :
+                        '';
+
+
+                    container.innerHTML += `
+                        <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="${imagePath}" class="img-fluid rounded-start" alt="Room Image">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${room.name}</h5>
+                                    <h6 class="mb-4">From $${room.price} per night</h6>
+
+                                    <div class="features mb-4">
+                                        <h6 class="mb-1">Room Details</h6>
+                                        ${details}
+                                    </div>
+
+                                    <div class="facilities mb-4">
+                                        <h6 class="mb-1">Facilities</h6>
+                                        ${facilities}
+                                    </div>
+
+                                    <div class="d-flex justify-content-evenly mb-2">
+                                        <button class="btn btn-primary btn-sm" onclick="editRoom(${room.id})">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteRoom(${room.id})">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                                    });
+            } catch (error) {
+                console.error('Error loading rooms:', error);
+                showToast(`Error loading rooms: ${error.message}`, 'danger');
+            }
+        }
+
+        // Add room
+        document.getElementById('addRoomForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'add_room');
+
+            try {
+                const response = await fetch('ajax_rooms.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                showToast(data.message, data.status === 'success' ? 'success' : 'danger');
+                if (data.status === 'success') {
+                    this.reset();
+                    loadRooms();
+                }
+            } catch (error) {
+                console.error('Error adding room:', error);
+                showToast('Failed to add room.', 'danger');
+            }
+        });
+
+        async function editRoom(id) {
+            try {
+                const response = await fetch(`ajax_rooms.php?action=get_room&id=${id}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const room = await response.json();
+                if (!room) throw new Error('Room not found.');
+
+                document.getElementById('edit_room_id').value = room.id;
+                document.getElementById('edit_room_name').value = room.name;
+                document.getElementById('edit_room_type').value = room.type;
+                document.getElementById('edit_capacity').value = room.capacity;
+                document.getElementById('edit_status').value = room.status;
+                document.getElementById('edit_price').value = room.price || 0;
+                document.getElementById('details').value = room.details || '';
+                document.getElementById('facilities').value = room.facilities || '';
+
+                const editModal = new bootstrap.Modal(document.getElementById('editRoomModal'));
+                editModal.show();
+            } catch (error) {
+                console.error('Error loading room details:', error);
+                showToast('Failed to load room details.', 'danger');
+            }
+        }
+
+        // Update Room
+        document.getElementById('editRoomForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'update_room');
+
+            try {
+                const response = await fetch('ajax_rooms.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                showToast(data.message, data.status === 'success' ? 'success' : 'danger');
+                if (data.status === 'success') {
+                    loadRooms();
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editRoomModal'));
+                    editModal.hide();
+                }
+            } catch (error) {
+                console.error('Error updating room:', error);
+                showToast('Failed to update room.', 'danger');
+            }
+        });
+
+        // Delete room
+        async function deleteRoom(id) {
+            const formData = new FormData();
+            formData.append('action', 'delete_room');
+            formData.append('room_id', id);
+
+            try {
+                const response = await fetch('ajax_rooms.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                showToast(data.message, data.status === 'success' ? 'success' : 'danger');
+                if (data.status === 'success') loadRooms();
+            } catch (error) {
+                console.error('Error deleting room:', error);
+                showToast('Failed to delete room.', 'danger');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadRooms);
     </script>
+
 </body>
 
 </html>
