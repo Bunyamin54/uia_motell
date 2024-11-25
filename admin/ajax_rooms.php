@@ -39,10 +39,10 @@ try {
             $status = trim($_POST['status'] ?? '');
             $details = $_POST['details'] ?? '';
             $facilities = $_POST['facilities'] ?? '';
-            $facilities = $_POST['price '] ?? '';
+            $price =intval($_POST['price'] ?? 0);
 
-            if (!$name || !$type || !$capacity || !$status) {
-                throw new Exception('All fields are required.');
+            if (!$name || !$type || !$capacity || !$status ||  $price <= 0) {
+                throw new Exception('All fields are required and price must be a positive integer.');
             }
 
             if (!in_array($type, ['Single', 'Double', 'Suite']) || !in_array($status, ['available', 'unavailable'])) {
@@ -71,7 +71,7 @@ try {
                 }
             }
 
-            $stmt = $pdo->prepare("INSERT INTO rooms (name, type, capacity, status, image, details, facilities, price) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO rooms (name, type, capacity, status, image, details, facilities, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             if ($stmt->execute([$name, $type, $capacity, $status, $imageName ,$details, $facilities ,$price])) {
                 echo json_encode(['status' => 'success', 'message' => 'Room added successfully!']);
             } else {
@@ -89,7 +89,7 @@ try {
             $imageName = null;
             $details = $_POST['details'] ?? '';
             $facilities = $_POST['facilities'] ?? '';
-            $price = $_POST['price '] ?? '';
+            $price = intval($_POST['price'] ?? 0);
 
             if (!$roomId || !$name || !$type || !$capacity || !$status) {
                 throw new Exception('All fields are required.');
@@ -120,7 +120,7 @@ try {
                 }
             }
 
-            $stmt = $pdo->prepare("UPDATE rooms SET name = ?, type = ?, capacity = ?, status = ?, image = COALESCE(?, image), details = ?, facilities = ? , price =?  WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE rooms SET name = ?, type = ?, capacity = ?, status = ?, image = COALESCE(?, image), details = ?, facilities = ?, price = ?  WHERE id = ?");
             if ($stmt->execute([$name, $type, $capacity, $status, $imageName,  $details, $facilities, $price, $roomId])) {
                 echo json_encode(['status' => 'success', 'message' => 'Room updated successfully!']);
             } else {

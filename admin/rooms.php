@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <input type="number" step="0.01" name="price" placeholder="Price (per night)" class="form-control" required>
+                <input type="number"  name="price" id="price"  placeholder="Price (per night)" class="form-control" required>
             </div>
             <div class="mb-3">
                 <input type="number" name="capacity" placeholder="Capacity" class="form-control" required>
@@ -80,8 +80,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="edit_price" class="form-label">Price (per night)</label>
-                            <input type="number" step="0.01" name="price" id="edit_price" class="form-control" required>
+                            <input type="number" name="price" id="edit_price" class="form-control" placeholder="e.g., 250" min="1" step="1" required>
                         </div>
+
                         <div class="mb-3">
                             <label for="edit_capacity" class="form-label">Capacity</label>
                             <input type="number" name="capacity" id="edit_capacity" class="form-control" required>
