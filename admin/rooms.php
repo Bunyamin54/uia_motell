@@ -1,70 +1,22 @@
-<?php
-session_start();
-
-// Ensure only admin users can access
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-    header('Location: index.php');
-    exit;
-} 
-
-// Include database connection
-include('../config/config.php');
-
-// Handle adding or deleting rooms
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_room'])) {
-        $stmt = $conn->prepare("INSERT INTO rooms (name, type, capacity, status) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssis", $_POST['room_name'], $_POST['room_type'], $_POST['capacity'], $_POST['status']);
-        $stmt->execute();
-
-        // Set toast message
-        $_SESSION['message'] = "Room added successfully!";
-        $_SESSION['message_type'] = "success";
-    } elseif (isset($_POST['delete_room'])) {
-        $stmt = $conn->prepare("DELETE FROM rooms WHERE id = ?");
-        $stmt->bind_param("i", $_POST['room_id']);
-        $stmt->execute();
-
-        // Set toast message
-        $_SESSION['message'] = "Room deleted successfully!";
-        $_SESSION['message_type'] = "danger";
-    }
-    header('Location: rooms.php');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Rooms</title>
+    <title>Admin - Manage Rooms</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/styles.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-success"> Manage Rooms</h1>
-
-        <!-- Toast Notifications -->
-        <?php if (isset($_SESSION['message'])): ?>
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <div class="toast show text-bg-<?= $_SESSION['message_type']; ?>" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?= $_SESSION['message']; ?>
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-            <?php unset($_SESSION['message'], $_SESSION['message_type']); ?>
-        <?php endif; ?>
+        <h1 class="text-success">Manage Rooms</h1>
+        <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 
         <!-- Add Room Form -->
-        <form action="rooms.php" method="POST" class="mt-4">
+        <form id="addRoomForm" enctype="multipart/form-data" class="mt-4">
             <h3 class="text-warning">Add New Room</h3>
             <div class="mb-3">
                 <input type="text" name="room_name" placeholder="Room Name" class="form-control" required>
@@ -85,50 +37,115 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="unavailable">Unavailable</option>
                 </select>
             </div>
-            <button type="submit" name="add_room" class="btn btn-success">Add Room</button>
+            <div class="mb-3">
+                <input type="file" name="room_image" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Add Room</button>
         </form>
 
         <h3 class="mt-5">All Rooms</h3>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $result = $conn->query("SELECT * FROM rooms");
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                        <td>{$row['name']}</td>
-                        <td>{$row['type']}</td>
-                        <td>{$row['capacity']}</td>
-                        <td>{$row['status']}</td>
-                        <td>
-                            <form method='POST' style='display:inline-block;'>
-                                <input type='hidden' name='room_id' value='{$row['id']}'>
-                                <button type='submit' name='delete_room' class='btn btn-danger'>Delete</button>
-                            </form>
-                        </td>
-                    </tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+        <div id="roomContainer" class="mt-3"></div>
     </div>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Automatically hide toast after 3 seconds
-        const toastEl = document.querySelector('.toast');
-        if (toastEl) {
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast text-bg-${type} show mb-2`;
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>`;
+            toastContainer.appendChild(toast);
             setTimeout(() => {
-                toastEl.classList.remove('show');
+                toast.remove();
             }, 3000);
         }
+
+        // Load rooms
+        async function loadRooms() {
+            try {
+                const response = await fetch('ajax_rooms.php?action=list');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                if (!Array.isArray(data)) throw new Error(data.message || 'Unexpected response format.');
+
+                const container = document.getElementById('roomContainer');
+                container.innerHTML = '';
+
+                data.forEach(room => {
+                    const imagePath = room.image ? `../public/images/rooms/${room.image}` : 'https://via.placeholder.com/500';
+                    container.innerHTML += `
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="${imagePath}" class="img-fluid rounded-start" alt="Room Image">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${room.name}</h5>
+                                        <p class="card-text">${room.type} - ${room.capacity} beds</p>
+                                        <p class="card-text">Status: 
+                                            <span class="badge bg-${room.status === 'available' ? 'success' : 'danger'}">
+                                                ${room.status}
+                                            </span>
+                                        </p>
+                                        <button class="btn btn-primary btn-sm" onclick="editRoom(${room.id})">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteRoom(${room.id})">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                console.error('Error loading rooms:', error);
+                showToast(`Error loading rooms: ${error.message}`, 'danger');
+            }
+        }
+
+        // Add room
+        document.getElementById('addRoomForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'add_room');
+
+            try {
+                const response = await fetch('ajax_rooms.php', { method: 'POST', body: formData });
+                const data = await response.json();
+                showToast(data.message, data.status === 'success' ? 'success' : 'danger');
+                if (data.status === 'success') {
+                    this.reset();
+                    loadRooms();
+                }
+            } catch (error) {
+                console.error('Error adding room:', error);
+                showToast('Failed to add room.', 'danger');
+            }
+        });
+
+        // Delete room
+        async function deleteRoom(id) {
+            const formData = new FormData();
+            formData.append('action', 'delete_room');
+            formData.append('room_id', id);
+
+            try {
+                const response = await fetch('ajax_rooms.php', { method: 'POST', body: formData });
+                const data = await response.json();
+                showToast(data.message, data.status === 'success' ? 'success' : 'danger');
+                if (data.status === 'success') loadRooms();
+            } catch (error) {
+                console.error('Error deleting room:', error);
+                showToast('Failed to delete room.', 'danger');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadRooms);
     </script>
 </body>
 

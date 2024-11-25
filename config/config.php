@@ -14,9 +14,14 @@ define('BASE_URL', 'http://localhost/UIA_MOTELL/'); // Change this to your base 
 define('DEBUG_MODE', true); // Set to false in production
 
 // Create a database connection
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+try {
+    $dsn = "mysql:host=127.0.0.1;dbname=uia_motell;charset=utf8mb4";
+    $pdo = new PDO($dsn, 'root', '123', [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+    error_log("Database connected successfully!");
 
-// Check the connection
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
