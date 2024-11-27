@@ -1,55 +1,55 @@
 <?php
+session_start();
 require_once '../config/config.php';
 
-if (!isset($_GET['room_id']) || !filter_var($_GET['room_id'], FILTER_VALIDATE_INT)) {
-    die("Room ID is required and must be valid!");
+// id doğrulama
+if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    die("<div class='alert alert-danger'>Room ID is required and must be valid!</div>");
 }
 
-$room_id = intval($_GET['room_id']);
+$id = intval($_GET['id']);
 
-// Fetch room details
+// Oda bilgilerini veritabanından çek
 $stmt = $pdo->prepare("SELECT * FROM rooms WHERE id = ?");
-$stmt->execute([$room_id]);
+$stmt->execute([$id]);
 $room = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$room) {
-    die("Room not found!");
+    die("<div class='alert alert-danger'>Room not found!</div>");
 }
 
-// Handle booking submission
+// Kullanıcı formunu işle
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_name = trim($_POST['user_name']);
     $user_email = filter_var($_POST['user_email'], FILTER_SANITIZE_EMAIL);
     $check_in = $_POST['check_in'];
     $check_out = $_POST['check_out'];
 
-    if (strtotime($check_out) <= strtotime($check_in)) {
+    if (empty($user_name) || empty($user_email)) {
+        $error = "Name and email are required.";
+    } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email address.";
+    } elseif (strtotime($check_out) <= strtotime($check_in)) {
         $error = "Check-out date must be later than check-in date.";
     } else {
+        // Toplam ücreti hesapla
         $total_price = $room['price'] * (strtotime($check_out) - strtotime($check_in)) / (60 * 60 * 24);
 
-        try {
-            $stmt = $pdo->prepare("INSERT INTO bookings (room_id, user_name, user_email, check_in, check_out, total_price, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            if ($stmt->execute([$room_id, $user_name, $user_email, $check_in, $check_out, $total_price, 'booked'])) {
-                $lastInsertId = $pdo->lastInsertId();
+        // $_SESSION['booking'] içine kaydet
+        $_SESSION['booking'] = [
+            'room_id' => $id,
+            'user_name' => $user_name,
+            'user_email' => $user_email,
+            'check_in' => $check_in,
+            'check_out' => $check_out,
+            'total_price' => $total_price,
+        ];
 
-                // Send email (optional)
-                $subject = "Booking Confirmation";
-                $message = "Thank you for your booking, $user_name! Your booking ID is $lastInsertId.";
-                mail($user_email, $subject, $message);
-
-                // Redirect to confirmation
-                header("Location: confirmation.php?booking_id=$lastInsertId");
-                exit;
-            } else {
-                $error = "Failed to process your booking. Please try again.";
-            }
-        } catch (PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
-        }
+        // payment.php'ye yönlendir
+        header("Location: payment.php");
+        exit;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -65,10 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Book <?php echo htmlspecialchars($room['name']); ?></h1>
         <p>Price Per Night: <strong>$<?php echo htmlspecialchars($room['price']); ?></strong></p>
 
+        <!-- Display error messages -->
         <?php if (isset($error)): ?>
-            <div class="alert alert-danger"><?php echo $error; ?></div>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
+        <!-- Booking form -->
         <form method="POST">
             <div class="mb-3">
                 <label for="user_name" class="form-label">Your Name</label>
@@ -86,7 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="check_out" class="form-label">Check-Out Date</label>
                 <input type="date" name="check_out" id="check_out" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-success">Confirm Booking</button>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+            <button type="submit" class="btn btn-success">Proceed to Payment</button>
         </form>
     </div>
 </body>

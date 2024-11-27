@@ -24,25 +24,32 @@ try {
         );
 
         CREATE TABLE IF NOT EXISTS rooms (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            type ENUM('Single', 'Double', 'Suite') NOT NULL,
-            capacity INT NOT NULL,
-            status ENUM('available', 'unavailable') DEFAULT 'available',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    type ENUM('Single', 'Double', 'Suite') NOT NULL,
+    capacity INT NOT NULL,
+    status ENUM('available', 'unavailable') DEFAULT 'available',
+    image VARCHAR(255),
+    details TEXT,
+    facilities TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-        CREATE TABLE IF NOT EXISTS bookings (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            room_id INT NOT NULL,
-            check_in DATE NOT NULL,
-            check_out DATE NOT NULL,
-            status ENUM('booked', 'checked_in', 'checked_out') DEFAULT 'booked',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
-        );
+
+                    CREATE TABLE IF NOT EXISTS bookings (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                room_id INT NOT NULL,
+                user_name VARCHAR(255) NOT NULL,
+                user_email VARCHAR(255) NOT NULL,
+                check_in DATE NOT NULL,
+                check_out DATE NOT NULL,
+                total_price DECIMAL(10,2) NOT NULL,
+                status ENUM('booked', 'cancelled', 'completed') DEFAULT 'booked',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                payment_status ENUM('pending', 'paid') DEFAULT 'pending',
+                FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
+            );
 
         CREATE TABLE IF NOT EXISTS reviews (
             id INT AUTO_INCREMENT PRIMARY KEY,

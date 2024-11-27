@@ -20,11 +20,11 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($rooms as $room): ?>
             <div class="col-md-4">
                 <div class="card mb-3">
-                    <img src="../public/images/rooms/<?php echo $room['image']; ?>" class="card-img-top" alt="Room Image">
+                    <img src="../public/images/rooms/<?php echo htmlspecialchars($room['image']); ?>" class="card-img-top" alt="Room Image">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo htmlspecialchars($room['name']); ?></h5>
                         <p class="card-text">Price: $<?php echo htmlspecialchars($room['price']); ?> per night</p>
-                        <a href="booking.php?room_id=<?php echo $room['id']; ?>" class="btn btn-primary">Book Now</a>
+                        <a href="booking.php?id=<?php echo htmlspecialchars($room['id']); ?>" class="btn btn-primary">Book Now</a>
                     </div>
                 </div>
             </div>
