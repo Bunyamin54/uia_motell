@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/styles.css">
 </head>
+
 <body class="bg-light">
     <h2 class="mt-5 pl-4 mb-4 text-center fw-bold h-font" style="color:#C80F2F;">Our Rooms</h2>
     <div class="container">
@@ -53,7 +55,9 @@
                                             ${facilities}
                                         </div>
                                         <div class="d-flex justify-content-evenly mb-2">
-                                            <a href="#" class="btn btn-sm btn-danger">Book Now</a>
+                                         <a href="../admin/booking.php?room_id=${room.id}" class="btn btn-primary">Book Now</a>
+
+
                                             <a href="#" class="btn btn-sm btn-success">More Info</a>
                                         </div>
                                     </div>
@@ -70,4 +74,5 @@
         document.addEventListener('DOMContentLoaded', loadRooms);
     </script>
 </body>
+
 </html>
