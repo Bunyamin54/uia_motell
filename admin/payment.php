@@ -15,9 +15,9 @@ if (!isset($_SESSION['booking'])) {
 
 $booking = $_SESSION['booking'];
 
-// Validate room_id
-if (!isset($booking['room_id']) || !filter_var($booking['room_id'], FILTER_VALIDATE_INT)) {
-    die("<div class='alert alert-danger'>Room ID is invalid. Please restart the booking process.</div>");
+// Validate booking details
+if (empty($booking['room_id']) || !filter_var($booking['room_id'], FILTER_VALIDATE_INT)) {
+    die("<div class='alert alert-danger'>Booking information is missing or invalid. Please restart the booking process.</div>");
 }
 
 // Process payment submission
@@ -45,8 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mockPayment($card_number, $expiry_date, $cvv)) {
             try {
                 // Insert booking details into the database
-                $stmt = $pdo->prepare("INSERT INTO bookings (room_id, user_name, user_email, check_in, check_out, total_price, status, payment_status) 
-                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]);
+
+                $stmt = $pdo->prepare("
+                    INSERT INTO bookings (room_id, user_name, user_email, check_in, check_out, total_price, status, payment_status) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+
                 if ($stmt->execute([
                     $booking['room_id'],
                     $booking['user_name'],
@@ -66,7 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Clear session and redirect to confirmation
                     unset($_SESSION['booking']);
-                    header("Location: confirmation.php?booking_id=$lastInsertId");
+                    header("Location: confirmation.php?id={$booking['room_id']}&booking_id=$lastInsertId");
+
                     exit;
                 } else {
                     $error = "Failed to process your booking. Please try again.";
@@ -80,10 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Mock payment function
 function mockPayment($card_number, $expiry_date, $cvv)
 {
-    // Simulate payment success
-    return true;
+    return true; // Simulate successful payment
 }
 ?>
 
@@ -110,7 +119,7 @@ function mockPayment($card_number, $expiry_date, $cvv)
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
-        <p><strong>Room:</strong> <?php echo htmlspecialchars($booking['id']); ?></p>
+        <p><strong>Room ID:</strong> <?php echo htmlspecialchars($booking['room_id']); ?></p>
         <p><strong>Total Price:</strong> $<?php echo htmlspecialchars($booking['total_price']); ?></p>
 
         <form method="POST" id="paymentForm" novalidate>
@@ -133,40 +142,12 @@ function mockPayment($card_number, $expiry_date, $cvv)
             </div>
             <button type="submit" class="btn btn-success">Pay Now</button>
         </form>
-
     </div>
 
     <script>
-        document.getElementById('paymentForm').addEventListener('input', function() {
-            const cardNumber = document.getElementById('card_number').value;
-            const expiryDate = document.getElementById('expiry_date').value;
-            const cvv = document.getElementById('cvv').value;
-
-            // Reset errors
-            document.getElementById('card_number_error').textContent = '';
-            document.getElementById('expiry_date_error').textContent = '';
-            document.getElementById('cvv_error').textContent = '';
-
-            // Validate card number
-            if (!/^\d{13,16}$/.test(cardNumber)) {
-                document.getElementById('card_number_error').textContent = 'Invalid card number. Must be 13-16 digits.';
-            }
-
-            // Validate expiry date
-            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
-                document.getElementById('expiry_date_error').textContent = 'Invalid expiry date. Use MM/YY format.';
-            }
-
-            // Validate CVV
-            if (!/^\d{3}$/.test(cvv)) {
-                document.getElementById('cvv_error').textContent = 'Invalid CVV. Must be 3 digits.';
-            }
-        });
-
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
             let isValid = true;
 
-            // Validate inputs again before submission
             const cardNumber = document.getElementById('card_number').value;
             const expiryDate = document.getElementById('expiry_date').value;
             const cvv = document.getElementById('cvv').value;
