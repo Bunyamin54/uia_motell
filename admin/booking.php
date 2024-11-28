@@ -3,14 +3,15 @@ session_start();
 require_once '../config/config.php';
 
 // id doğrulama
-if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+if (!isset($_GET['room_id']) || !filter_var($_GET['room_id'], FILTER_VALIDATE_INT)) {
     die("<div class='alert alert-danger'>Room ID is required and must be valid!</div>");
 }
 
-$id = intval($_GET['id']);
+$id = intval($_GET['room_id']);
 
 // Oda bilgilerini veritabanından çek
-$stmt = $pdo->prepare("SELECT * FROM rooms WHERE id = ?");
+
+$stmt = $pdo->prepare("SELECT * FROM rooms WHERE id = ? AND status = 'available'");
 $stmt->execute([$id]);
 $room = $stmt->fetch(PDO::FETCH_ASSOC);
 
