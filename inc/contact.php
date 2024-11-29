@@ -47,19 +47,16 @@
                     <p><i class="bi bi-geo-alt"></i> Campus Kristiansand, Universitetsveien 25, 4630 Kristiansand, Norge</p>
 
                     <h5 class="fw-bold">Phone</h5>
-                    <p><a href="tel:+1234567890" class="text-decoration-none text-dark"><i class="bi bi-telephone"></i> +123 456 7890</a></p>
+                    <p><a href="tel:+47 480809010" class="text-decoration-none text-dark"><i class="bi bi-telephone"></i> +47 480 80 901</a></p>
 
                     <!-- Textarea for message -->
-                  
                     <h5 class="fw-bold mt-4" style="color:#C80F2F;">Leave a Message</h5>
-                    <form method="POST" action="/uia_motell/inc/contact_form.php">
 
+                    <div class="bg-white p-4 rounded shadow">
+                        <p class="text-muted">If you have additional questions, feel free to email us at:</p>
+                        <p><strong>Email:</strong> <a href="mailto:uia.agder@gmail.com" class="text-decoration-none" style="color:#C80F2F;">uia.agder@gmail.com</a></p>
+                    </div>
 
-                        <div class="form-group">
-                            <textarea name="message" rows="5" class="form-control shadow-none" placeholder="Type your message here..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn mt-3 text-white" style="background-color: #C80F2F;">Send</button>
-                    </form>
 
 
                 </div>
