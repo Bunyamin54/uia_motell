@@ -3,7 +3,7 @@
 define('DB_HOST', '127.0.0.1'); // Database host
 define('DB_NAME', 'uia_motell'); // Your database name
 define('DB_USER', 'root'); // Your database username
-define('DB_PASS', ''); // Your database password
+define('DB_PASS', '123'); // Your database password
 define('DB_CHARSET', 'utf8mb4'); // Character set
 
 // Application settings
