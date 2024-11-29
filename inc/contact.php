@@ -52,7 +52,8 @@
                     <!-- Textarea for message -->
                   
                     <h5 class="fw-bold mt-4" style="color:#C80F2F;">Leave a Message</h5>
-                    <form method="POST" action="inc/contact_form.php">
+                    <form method="POST" action="/uia_motell/inc/contact_form.php">
+
 
                         <div class="form-group">
                             <textarea name="message" rows="5" class="form-control shadow-none" placeholder="Type your message here..." required></textarea>
