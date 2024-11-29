@@ -1,3 +1,19 @@
+<?php
+// Veritabanı bağlantısı
+try {
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// Resim yollarını al
+$stmt = $pdo->query("SELECT image_path FROM homepage_images");
+$images = $stmt->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,32 +47,17 @@
 
     <!-- Swiper Section -->
     <div class="container-fluid px-lg-4 mt-4">
-        <div class="swiper swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/2.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/3.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/4.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/5.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/6.jpg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
-                <div class="swiper-slide">
-                    <img src="../public/images/home/1.jpeg" class="w-100 d-block" style="height: 575px; object-fit: cover;">
-                </div>
+    <div class="swiper swiper-container">
+    <div class="swiper-wrapper">
+        <?php foreach ($images as $image): ?>
+            <div class="swiper-slide">
+                <img src="<?php echo htmlspecialchars($image['image_path']); ?>" class="w-100 d-block" style="height: 575px; object-fit: cover;">
             </div>
-            <div class="swiper-pagination"></div>
-        </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
     </div>
 
     <!-- Availability Form Section -->

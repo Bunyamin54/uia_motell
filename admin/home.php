@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 require_once '../config/config.php';
 
@@ -7,6 +11,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     header('Location: ../index.php');
     exit;
 }
+
 
 // Database connection
 try {
@@ -24,8 +29,22 @@ $targetDir = "../public/images/home/";
 
 // Create directory if missing
 if (!is_dir($targetDir)) {
-    mkdir($targetDir, 0777, true);
+    if (!mkdir($targetDir, 0777, true)) {
+        error_log("Failed to create target directory: " . $targetDir);
+        die("Failed to create target directory. Please check permissions.");
+    }
+    error_log("Target directory created: " . $targetDir);
 }
+
+// Check if target directory is writable
+if (!is_writable($targetDir)) {
+    error_log("PHP cannot write to target directory: " . $targetDir);
+    die("Target directory is not writable. Please check permissions.");
+} else {
+    error_log("PHP can write to target directory: " . $targetDir);
+}
+
+
 
 // Handle image upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['home_image'])) {
@@ -33,26 +52,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['home_image'])) {
     $maxSize = 2 * 1024 * 1024; // 2 MB
     $file = $_FILES['home_image'];
 
+    error_log("File upload initiated.");
+
     if ($file['error'] !== UPLOAD_ERR_OK) {
+        error_log("Upload error code: " . $file['error']);
         $_SESSION['message'] = "Upload error code: " . $file['error'];
         $_SESSION['message_type'] = 'danger';
     } elseif (!in_array(mime_content_type($file['tmp_name']), $allowedTypes)) {
+        error_log("Invalid file type: " . mime_content_type($file['tmp_name']));
         $_SESSION['message'] = "Invalid file type. Only JPG, PNG, or GIF allowed.";
         $_SESSION['message_type'] = 'danger';
     } elseif ($file['size'] > $maxSize) {
+        error_log("File size exceeds limit: " . $file['size']);
         $_SESSION['message'] = "File size exceeds 2 MB limit.";
         $_SESSION['message_type'] = 'danger';
     } else {
         $fileName = uniqid() . '_' . basename($file['name']);
         $targetFile = $targetDir . $fileName;
 
+        error_log("Target file path: " . $targetFile);
+
         if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-            // Insert image path into database
-            $stmt = $pdo->prepare("INSERT INTO homepage_images (image_path) VALUES (:image_path)");
-            $stmt->execute([':image_path' => $fileName]);
-            $_SESSION['message'] = "Image uploaded successfully!";
-            $_SESSION['message_type'] = 'success';
-        } else {
+            error_log("File moved successfully.");
+        
+            // Veritabanına tam yolu kaydet
+            $imagePath = "../public/images/home/" . $fileName; // Tam yolu oluştur
+            try {
+                $stmt = $pdo->prepare("INSERT INTO homepage_images (image_path) VALUES (:image_path)");
+                $stmt->execute([':image_path' => $imagePath]);
+                error_log("Database insertion successful for file: " . $imagePath);
+                $_SESSION['message'] = "Image uploaded successfully!";
+                $_SESSION['message_type'] = 'success';
+            } catch (PDOException $e) {
+                error_log("Database error: " . $e->getMessage());
+                $_SESSION['message'] = "Database error: " . $e->getMessage();
+                $_SESSION['message_type'] = 'danger';
+            }
+        }
+        else {
+            error_log("Failed to move uploaded file.");
             $_SESSION['message'] = "Failed to upload image. Check directory permissions.";
             $_SESSION['message_type'] = 'danger';
         }
@@ -60,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['home_image'])) {
     header('Location: home.php');
     exit;
 }
+
 
 // Handle image delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['image_id'])) {
@@ -138,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['image_id'])) {
             $stmt = $pdo->query("SELECT * FROM homepage_images");
             while ($row = $stmt->fetch()) {
                 echo '<div class="col-md-4 mt-3">';
-                echo '<img src="/uia_motell/public/images/home/' . htmlspecialchars($row['image_path']) . '" class="img-fluid" />';
+                echo '<img src="' . htmlspecialchars($row['image_path']) . '" class="img-fluid" />';
                 echo '<form action="home.php" method="POST" class="mt-2">';
                 echo '<input type="hidden" name="image_id" value="' . $row['id'] . '">';
                 echo '<button type="submit" class="btn btn-danger">Delete</button>';
