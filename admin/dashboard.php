@@ -46,7 +46,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
             white-space: nowrap; /* Satır taşmasını engeller */
             overflow: hidden; /* Taşan yazıları gizler */
             width: 0; /* Başlangıçta görünmez */
-            animation: typing 6s steps(30, end); /* Animasyon */
+            animation: typing 4s steps(30, end); /* Animasyon */
             animation-fill-mode: forwards; 
         }
 
