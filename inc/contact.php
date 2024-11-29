@@ -21,7 +21,7 @@
 
     <!-- Contact Section -->
     <div class="container mt-5">
-        <h2 class="text-center mb-4 fw-bold h-font" style="color:#C80F2F"; >Contact Us</h2>
+        <h2 class="text-center mb-4 fw-bold h-font" style="color:#C80F2F" ;>Contact Us</h2>
 
         <div class="row">
 
@@ -43,13 +43,23 @@
             <!-- Contact Information -->
             <div class="col-lg-6 col-md-12 mb-4">
                 <div class="bg-white p-4 rounded shadow">
-                    <h5 class="fw-bold"style="color:#C80F2F;">Address</h5>
+                    <h5 class="fw-bold" style="color:#C80F2F;">Address</h5>
                     <p><i class="bi bi-geo-alt"></i> Campus Kristiansand, Universitetsveien 25, 4630 Kristiansand, Norge</p>
 
                     <h5 class="fw-bold">Phone</h5>
                     <p><a href="tel:+1234567890" class="text-decoration-none text-dark"><i class="bi bi-telephone"></i> +123 456 7890</a></p>
 
+                    <!-- Textarea for message -->
                   
+                    <h5 class="fw-bold mt-4" style="color:#C80F2F;">Leave a Message</h5>
+                    <form method="POST" action="inc/contact_form.php">
+
+                        <div class="form-group">
+                            <textarea name="message" rows="5" class="form-control shadow-none" placeholder="Type your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn mt-3 text-white" style="background-color: #C80F2F;">Send</button>
+                    </form>
+
 
                 </div>
             </div>
