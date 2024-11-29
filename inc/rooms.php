@@ -13,7 +13,7 @@
 
 <body class="bg-light">
     <header class="text-center py-5">
-        <h2 class="fw-bold h-font text-danger">Our Rooms</h2>
+        <h2 class="fw-bold h-font text-danger">Rooms & Suites</h2>
     </header>
     <main class="container">
         <div class="row" id="roomContainer"></div>
