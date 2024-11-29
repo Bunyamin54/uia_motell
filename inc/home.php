@@ -91,7 +91,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-lg-1 mb-lg-3 mt-2">
-                            <button type="submit" class="btn text-success shadow-none custom-bg">Submit</button>
+                            <button type="submit" class="btn text-success shadow-none custom-bg">Search</button>
                         </div>
                     </div>
                 </form>
