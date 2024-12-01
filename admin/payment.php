@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Kullanıcının sadakat puanlarını artır
                         $loyaltyUpdate = $pdo->prepare("
                             UPDATE guest_users 
-                            SET loyalty_points = loyalty_points + 10 
+                            SET loyalty_points = loyalty_points + 5 
                             WHERE email = ?
                         ");
                         $loyaltyUpdate->execute([$booking['user_email']]);

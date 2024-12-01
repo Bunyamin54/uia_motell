@@ -7,23 +7,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $address = $_POST['address'];
-    $postal_code = $_POST['postal_code'] ?? '';
-    $dob = $_POST['dob'] ?? '';
+   
+   
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     try {
         // Insert new guest user into the database
         $stmt = $pdo->prepare("
-            INSERT INTO guest_users (name, email, phone, address, postal_code, dob, password, role, loyalty_points, discount_level)
-            VALUES (:name, :email, :phone, :address, :postal_code, :dob, :password, 'guest', 0, 0)
+            INSERT INTO guest_users (name, email, phone, address, password, role, loyalty_points, discount_level)
+            VALUES (:name, :email, :phone, :address, :password, 'guest', 0, 0)
         ");
         $stmt->execute([
             ':name' => $name,
             ':email' => $email,
             ':phone' => $phone,
             ':address' => $address,
-            ':postal_code' => $postal_code,
-            ':dob' => $dob,
+          
+          
             ':password' => $password,
         ]);
 
