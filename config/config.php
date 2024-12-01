@@ -11,13 +11,16 @@ define('APP_NAME', 'UIA Motel');
 define('BASE_URL', 'http://localhost/uia_motell/');
 
 // login.php dosyasındaki yönlendirmeler
-if ($user['role'] === 'admin') {
-    header('Location: ' . BASE_URL . 'admin/dashboard.php');
-    exit;
-} elseif ($user['role'] === 'guest') {
-    header('Location: ' . BASE_URL . 'inc/guest_dashboard.php');
-    exit;
+if (isset($user) && isset($user['role'])) {
+    if ($user['role'] === 'admin') {
+        header('Location: ' . BASE_URL . 'admin/dashboard.php');
+        exit;
+    } elseif ($user['role'] === 'guest') {
+        header('Location: ' . BASE_URL . 'inc/guest_dashboard.php');
+        exit;
+    }
 }
+
 
 
 // Debug mode
