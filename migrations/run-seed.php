@@ -65,6 +65,19 @@ try {
         echo "Reviews already exist. Skipping reviews seed...<br>";
     }
 
+      // Guest Users seed
+        $checkGuestUsers = $pdo->query("SELECT COUNT(*) FROM guest_users")->fetchColumn();
+        if ($checkGuestUsers == 0) {
+            $pdo->exec("
+                INSERT INTO guest_users (name, email, password, role) VALUES
+                ('John Doe', 'john.doe@example.com', '" . password_hash('password123', PASSWORD_DEFAULT) . "', 'guest'),
+                ('Jane Smith', 'jane.smith@example.com', '" . password_hash('password123', PASSWORD_DEFAULT) . "', 'guest');
+            ");
+            echo "Guest users seeded successfully!<br>";
+        } else {
+            echo "Guest users already exist. Skipping guest users seed...<br>";
+        }
+
 
 
     // Seed Homepage Images

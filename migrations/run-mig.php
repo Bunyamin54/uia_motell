@@ -23,18 +23,30 @@ try {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
 
-        CREATE TABLE IF NOT EXISTS rooms (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    type ENUM('Single', 'Double', 'Suite') NOT NULL,
-    capacity INT NOT NULL,
-    status ENUM('available', 'unavailable') DEFAULT 'available',
-    image VARCHAR(255),
-    details TEXT,
-    facilities TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+                    CREATE TABLE IF NOT EXISTS guest_users (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL UNIQUE,
+                    password VARCHAR(255) NOT NULL,
+                    role ENUM('guest') DEFAULT 'guest',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    loyalty_points INT DEFAULT 0,
+                    discount_level INT DEFAULT 0,
+                    booking_history TEXT DEFAULT NULL
+                );
+
+                CREATE TABLE IF NOT EXISTS rooms (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            type ENUM('Single', 'Double', 'Suite') NOT NULL,
+            capacity INT NOT NULL,
+            status ENUM('available', 'unavailable') DEFAULT 'available',
+            image VARCHAR(255),
+            details TEXT,
+            facilities TEXT,
+            price DECIMAL(10,2) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
 
 
                     CREATE TABLE IF NOT EXISTS bookings (

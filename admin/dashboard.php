@@ -6,9 +6,14 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// Oturum ve kullanıcı kontrolü
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['user']['role'] !== 'admin') {
-    header('Location: ../login.php'); // Giriş sayfasına yönlendirme
+// // Oturum ve kullanıcı kontrolü
+// if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['user']['role'] !== 'admin') {
+//     header('Location: ../login.php'); // Giriş sayfasına yönlendirme
+//     exit;
+// }
+
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+    header('Location: ../login.php');
     exit;
 }
 ?>
