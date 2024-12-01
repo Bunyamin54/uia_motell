@@ -55,17 +55,28 @@ MySQL eller MariaDB for å lagre bruker- og bookingdata.
 
 UIA_MOTELL/
 ├── admin/
+│   ├── ajax_rooms.php
+│   ├── available_rooms.php
+│   ├── booking.php
+│   ├── confirmation.php
+│   ├── dashboard.php
 │   ├── home.php
+│   ├── login.php
+│   ├── logout.php
+│   ├── payment.php
 │   ├── rooms.php
 │   ├── settings.php
+│   ├── update_shutdown.php
 ├── config/
 │   ├── config.php
 │   ├── db.php
 ├── inc/
 │   ├── contact.php
+│   ├── footer.php
 │   ├── home.php
 │   ├── login_register.php
 │   ├── navbar.php
+│   ├── reviews.php
 │   ├── rooms.php
 ├── migrations/
 │   ├── run-mig.php
@@ -79,6 +90,3 @@ UIA_MOTELL/
 │   ├── scripts.js
 │   ├── styles.css
 ├── README.md
-
-
-

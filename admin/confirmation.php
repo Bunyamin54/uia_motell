@@ -37,8 +37,21 @@ try {
     if (!$room) {
         die("<div class='alert alert-danger'>Room details not found!</div>");
     }
+
+    // Update loyalty points
+    $loyaltyUpdate = $pdo->prepare("
+        UPDATE guest_users 
+        SET loyalty_points = loyalty_points + 10 
+        WHERE email = ?
+    ");
+    $loyaltyUpdate->execute([$booking['user_email']]);
+
+    if ($loyaltyUpdate->rowCount() === 0) {
+        die("<div class='alert alert-danger'>Failed to update loyalty points. No rows affected.</div>");
+    }
 } catch (PDOException $e) {
-    die("<div class='alert alert-danger'>Database error: " . $e->getMessage() . "</div>");
+    error_log($e->getMessage());
+    die("<div class='alert alert-danger'>An unexpected error occurred. Please try again later.</div>");
 }
 ?>
 

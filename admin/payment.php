@@ -2,12 +2,10 @@
 session_start();
 require_once '../config/config.php';
 
-// Ensure CSRF token is available
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Ensure booking details are available in the session
 if (!isset($_SESSION['booking'])) {
     header("Location: available_rooms.php?error=missing_booking");
     exit;
@@ -15,19 +13,15 @@ if (!isset($_SESSION['booking'])) {
 
 $booking = $_SESSION['booking'];
 
-// Validate booking details
 if (empty($booking['room_id']) || !filter_var($booking['room_id'], FILTER_VALIDATE_INT)) {
     die("<div class='alert alert-danger'>Booking information is missing or invalid. Please restart the booking process.</div>");
 }
 
-// Process payment submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validate CSRF token
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("<div class='alert alert-danger'>Invalid CSRF token.</div>");
     }
 
-    // Sanitize and validate payment inputs
     $card_number = preg_replace('/[^0-9]/', '', trim($_POST['card_number']));
     $expiry_date = trim($_POST['expiry_date']);
     $cvv = preg_replace('/[^0-9]/', '', trim($_POST['cvv']));
@@ -41,10 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($cvv) !== 3) {
         $error = "CVV must be 3 digits.";
     } else {
-        // Simulate payment success
         if (mockPayment($card_number, $expiry_date, $cvv)) {
             try {
-                // Insert booking details into the database
                 $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -67,15 +59,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ])) {
                     $lastInsertId = $pdo->lastInsertId();
 
-                    // Send confirmation email
-                    $subject = "Booking and Payment Confirmation";
-                    $message = "Thank you for your booking, {$booking['user_name']}! Your booking ID is $lastInsertId.";
-                    mail($booking['user_email'], $subject, $message);
+                    try {
+                        // Kullanıcının sadakat puanlarını artır
+                        $loyaltyUpdate = $pdo->prepare("
+                            UPDATE guest_users 
+                            SET loyalty_points = loyalty_points + 10 
+                            WHERE email = ?
+                        ");
+                        $loyaltyUpdate->execute([$booking['user_email']]);
+                    
+                        // Kullanıcının mevcut sadakat puanlarını kontrol et
+                        $loyaltyCheck = $pdo->prepare("
+                            SELECT loyalty_points 
+                            FROM guest_users 
+                            WHERE email = ?
+                        ");
+                        $loyaltyCheck->execute([$booking['user_email']]);
+                        $loyaltyPoints = $loyaltyCheck->fetchColumn();
+                    
+                        // Eğer sadakat puanları 20'yi geçerse, indirim seviyesini güncelle
+                        if ($loyaltyPoints >= 20) {
+                            $updateDiscount = $pdo->prepare("
+                                UPDATE guest_users 
+                                SET discount_level = 15, loyalty_points = 0 
+                                WHERE email = ?
+                            ");
+                            $updateDiscount->execute([$booking['user_email']]);
+                        }
+                    } catch (PDOException $e) {
+                        die("<div class='alert alert-danger'>Failed to update loyalty points or discount: " . $e->getMessage() . "</div>");
+                    }
+                    
 
-                    // Clear session and redirect to confirmation
                     unset($_SESSION['booking']);
                     header("Location: confirmation.php?id={$booking['room_id']}&booking_id=$lastInsertId");
-
                     exit;
                 } else {
                     $error = "Failed to process your booking. Please try again.";
@@ -89,12 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Mock payment function
-function mockPayment($card_number, $expiry_date, $cvv)
-{
-    return true; // Simulate successful payment
+function mockPayment($card_number, $expiry_date, $cvv) {
+    return true;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -145,7 +161,7 @@ function mockPayment($card_number, $expiry_date, $cvv)
     </div>
 
     <script>
-        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
             let isValid = true;
 
             const cardNumber = document.getElementById('card_number').value;
