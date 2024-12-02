@@ -13,6 +13,7 @@
     require_once '../config/config.php';
 
      // Database connection
+     
 
     try {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
