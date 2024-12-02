@@ -62,6 +62,12 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+<nav class="navbar navbar-light py-2 bg-light justify-content-end">
+        <div class="container">
+            <a class="navbar-brand" href="#">Booking page </a>
+            <a href="../inc/guest_dashboard.php" class="btn btn-primary">To your dashboard</a>
+        </div>
+    </nav>
        <!-- Display the booking confirmation details -->
     <div class="container mt-5">
         <h1 class="text-center text-success">Booking Confirmation</h1>
@@ -77,5 +83,5 @@ try {
             </div>
         </div>
     </div>
-</body>
+</bodyi>
 </html>
