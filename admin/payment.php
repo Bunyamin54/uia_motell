@@ -151,17 +151,17 @@ function mockPayment($card_number, $expiry_date, $cvv) {
 
             <div class="mb-3">
                 <label for="card_number" class="form-label">Card Number</label>
-                <input type="text" name="card_number" id="card_number" class="form-control" required>
+                <input type="text" name="card_number" id="card_number" class="form-control" required placeholder="Enter your card number">
                 <div class="error" id="card_number_error"></div>
             </div>
             <div class="mb-3">
                 <label for="expiry_date" class="form-label">Expiry Date (MM/YY)</label>
-                <input type="text" name="expiry_date" id="expiry_date" class="form-control" required>
+                <input type="text" name="expiry_date" id="expiry_date" class="form-control" required placeholder="Enter your expiry date">
                 <div class="error" id="expiry_date_error"></div>
             </div>
             <div class="mb-3">
                 <label for="cvv" class="form-label">CVV</label>
-                <input type="text" name="cvv" id="cvv" class="form-control" required>
+                <input type="text" name="cvv" id="cvv" class="form-control" required placeholder="your cvv">
                 <div class="error" id="cvv_error"></div>
             </div>
             <button type="submit" class="btn btn-success">Pay Now</button>
