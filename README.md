@@ -1,5 +1,31 @@
 # uia_motell
 
+
+# Access Information
+
+Admin Credentials:
+To access the admin panel, use the following credentials:
+
+Email: admin@example.com
+Password: admin123
+
+Guest Access:
+Guests can register and log in to view and manage their bookings on their personalized dashboard.
+
+
+# Database credentials
+
+define('DB_HOST', '127.0.0.1');     // Database host
+define('DB_NAME', 'uia_motell');    // Database name
+define('DB_USER', 'root');          // Database username
+define('DB_PASS', '123');           // Database password
+define('DB_CHARSET', 'utf8mb4');    // Character set
+
+# Application settings
+define('APP_NAME', 'UIA Motel');
+define('BASE_URL', 'http://localhost/uia_motell/');
+
+
 # php_booking-prosjekt
 
 Room Booking System
@@ -50,6 +76,8 @@ PHP version 8.0 or higher.
 Database
 MySQL or MariaDB to handle data storage.
 
+
+
 # Room Booking System
 
 ```
@@ -91,3 +119,64 @@ UIA_MOTELL/
 │   ├── scripts.js                
 │   ├── styles.css                
 ├── README.md                   
+
+
+
+## Database Schema
+
+The following diagram illustrates the structure of the `uia_motell` database:
+
+![Database Schema](public/images/uia_motell database.png)
+
+### Tables Overview
+
+1. **bookings**:
+   - `id` (Primary Key)
+   - `user_id` (Foreign Key)
+   - `room_id` (Foreign Key)
+   - `check_in_date`
+   - `check_out_date`
+   - `total_price`
+   - `status`
+
+2. **guest_users**:
+   - `id` (Primary Key)
+   - `name`
+   - `email`
+   - `phone_number`
+   - `address`
+
+3. **homepage_images**:
+   - `id` (Primary Key)
+   - `image_path`
+   - `description`
+   - `active_status`
+
+4. **reviews**:
+   - `id` (Primary Key)
+   - `user_id` (Foreign Key)
+   - `room_id` (Foreign Key)
+   - `review_text`
+   - `rating`
+   - `created_at`
+
+5. **rooms**:
+   - `id` (Primary Key)
+   - `room_type`
+   - `capacity`
+   - `price_per_night`
+   - `availability_status`
+   - `description`
+
+6. **settings**:
+   - `id` (Primary Key)
+   - `setting_name`
+   - `setting_value`
+
+7. **users**:
+   - `id` (Primary Key)
+   - `name`
+   - `email`
+   - `password`
+   - `role`
+   - `created_at`
