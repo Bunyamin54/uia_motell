@@ -19,13 +19,18 @@ input[type="number"] {
 
 .custom-bg {
   background-color: var(--teal);
-  border: 1px solid var(--teal);
+  border: 1px solid green;
+  color: #FFFFFF;
+  transform: translateX(-5px); 
 }
 
 .custom-bg:hover {
   background-color: var(--teal_hover);
-  border-color: var(--teal_hover);
+  border-color: darkgreen;
+  transform: translateX(-5px); 
 }
+
+
 
 .custom-alert {
   position: fixed;
