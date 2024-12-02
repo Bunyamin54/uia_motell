@@ -15,20 +15,16 @@ Guests can register and log in to view and manage their bookings on their person
 
 # Database credentials
 
-define('DB_HOST', '127.0.0.1');     // Database host
-define('DB_NAME', 'uia_motell');    // Database name
-define('DB_USER', 'root');          // Database username
-define('DB_PASS', '123');           // Database password
-define('DB_CHARSET', 'utf8mb4');    // Character set
-
-# Application settings
-define('APP_NAME', 'UIA Motel');
-define('BASE_URL', 'http://localhost/uia_motell/');
+// Database host      '127.0.0.1' 
+// Database name      'uia_motell'  
+// Database username  'root';       
+// Database password  '123';        
+// 'APP_NAME',        'UIA Motel';   
+// 'BASE_URL',        'http://localhost/uia_motell/';
 
 
-# php_booking-prosjekt
 
-Room Booking System
+# Room Booking System
 
 This project is a dynamic web application for managing room bookings in a small motel with a total of 25 rooms.
 
@@ -37,6 +33,7 @@ Project Description
 RoomBookingSystem is a web-based application that enables users to book rooms of various types in a motel. Built with PHP and Bootstrap, this system aims to efficiently handle room reservations for both guests and administrators.
 
 Features
+
 Room Types and Capacity
 
 Offers at least three room types: Single Room, Junior Suite, and Family Suite.
@@ -45,18 +42,22 @@ Each room type has predefined capacity limits for the number of adults and child
 Room Management (Administrator Only)
 
 Administrators can:
+
 Add, update, or delete room types.
 Set rooms as unavailable for specific periods (e.g., maintenance or special events).
 Manage room availability through a dedicated administrative interface.
 
 Room Booking for Guests
+
 Guests can:
 Search for available rooms by specifying check-in and check-out dates.
 Provide details such as the number of adults and children.
 Specify optional preferences like floor level or proximity to elevators.
 
 Loyalty Program and Guest Profile
+
 Guests can:
+
 View booking history and retrieve receipts.
 Update personal details and save preferences for future bookings.
 
