@@ -1,16 +1,13 @@
 <?php
 session_start();
 
-// Tarayıcı önbelleğini devre dışı bırak
+// Take the room_id from the URL
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// // Oturum ve kullanıcı kontrolü
-// if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['user']['role'] !== 'admin') {
-//     header('Location: ../login.php'); // Giriş sayfasına yönlendirme
-//     exit;
-// }
+// Redirect to login page if user is not an admin
 
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     header('Location: ../login.php');
@@ -25,45 +22,47 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Logout butonu */
+       
         .logout-btn {
             position: absolute;
             top: 20px;
             right: 20px;
         }
 
-        /* Yazı yazma animasyonu */
+        
         @keyframes typing {
             from {
-                width: 0; /* Yazı başlangıçta görünmez */
+                width: 0; 
             }
             to {
-                width: 100%; /* Yazının tamamı görünür */
+                width: 100%; 
             }
         }
 
-        /* Yazı stil ve animasyon ayarları */
+      
         .typing-effect {
-            font-family: 'Courier New', Courier, monospace; /* Yazı tipi */
-            font-size: 3rem; /* Yazı büyüklüğü */
-            font-weight: bolder; /* Kalın yazı */
-            color: #C80F2F; /* Kırmızı renk */
-            white-space: nowrap; /* Satır taşmasını engeller */
-            overflow: hidden; /* Taşan yazıları gizler */
-            width: 0; /* Başlangıçta görünmez */
-            animation: typing 4s steps(30, end); /* Animasyon */
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 3rem; 
+            font-weight: bolder; 
+            color: #C80F2F; 
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0; 
+            animation: typing 4s steps(30, end); 
             animation-fill-mode: forwards; 
         }
 
-        /* Genel düzen */
+       
         .center-title {
-            text-align: center; /* Ortaya hizalama */
-            margin-top: 10px; /* Edit Page başlığına yakın */
+            text-align: center; 
+            margin-top: 10px; 
         }
     </style>
 </head>
 <body>
-    <!-- Logout düğmesi -->
+      
+      <!--  Display the admin dashboard -->
+
     <a href="logout.php" class="btn btn-danger logout-btn">Logout</a>
 
     <div class="container mt-5 text-center">

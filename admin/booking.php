@@ -2,14 +2,15 @@
 session_start();
 require_once '../config/config.php';
 
-// id doğrulama
+//  take the room_id from the URL
+
 if (!isset($_GET['room_id']) || !filter_var($_GET['room_id'], FILTER_VALIDATE_INT)) {
     die("<div class='alert alert-danger'>Room ID is required and must be valid!</div>");
 }
 
 $id = intval($_GET['room_id']);
 
-// Oda bilgilerini veritabanından çek
+// fetch the room from the database
 
 $stmt = $pdo->prepare("SELECT * FROM rooms WHERE id = ? AND status = 'available'");
 $stmt->execute([$id]);
@@ -19,7 +20,8 @@ if (!$room) {
     die("<div class='alert alert-danger'>Room not found!</div>");
 }
 
-// Kullanıcı formunu işle
+// CSRF token
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_name = trim($_POST['user_name']);
     $user_email = filter_var($_POST['user_email'], FILTER_SANITIZE_EMAIL);
@@ -33,10 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strtotime($check_out) <= strtotime($check_in)) {
         $error = "Check-out date must be later than check-in date.";
     } else {
-        // Toplam ücreti hesapla
+        //  calculate the total price
+
         $total_price = $room['price'] * (strtotime($check_out) - strtotime($check_in)) / (60 * 60 * 24);
 
-        // $_SESSION['booking'] içine kaydet
+        //  store the booking details in the session
+
         $_SESSION['booking'] = [
             'room_id' => $id,
             'user_name' => $user_name,
@@ -46,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'total_price' => $total_price,
         ];
 
-        // payment.php'ye yönlendir
+        //  redirect to the payment page
+
         header("Location: payment.php");
         exit;
     }
@@ -62,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+       <!--  Display the room details and booking form -->
     <div class="container mt-5">
         <h1>Book <?php echo htmlspecialchars($room['name']); ?></h1>
         <p>Price Per Night: <strong>$<?php echo htmlspecialchars($room['price']); ?></strong></p>

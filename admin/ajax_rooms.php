@@ -1,17 +1,26 @@
 <?php
+
+//   This file handles AJAX requests for rooms 
+
+
 require_once '../config/config.php';
 
 header('Content-Type: application/json');
 
 try {
+
+
     // GET Requests
+
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if ($_GET['action'] === 'list') {
+
             // List all rooms
             $stmt = $pdo->query("SELECT id, name, type, capacity, status, image, details, facilities, price FROM rooms");
             $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rooms);
         } elseif ($_GET['action'] === 'get_room') {
+
             // Get a specific room's details
             $roomId = intval($_GET['id'] ?? 0);
             $stmt = $pdo->prepare("SELECT id, name, type, capacity, status, image , details, facilities, price FROM rooms WHERE id = ?");
@@ -27,11 +36,13 @@ try {
         }
     }
 
-    // POST Requests
+    // POST Requests and Form Submissions
+
     elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = $_POST['action'] ?? null;
 
         // Add a new room
+
         if ($action === 'add_room') {
             $name = trim($_POST['room_name'] ?? '');
             $type = trim($_POST['room_type'] ?? '');
@@ -39,7 +50,7 @@ try {
             $status = trim($_POST['status'] ?? '');
             $details = $_POST['details'] ?? '';
             $facilities = $_POST['facilities'] ?? '';
-            $price =intval($_POST['price'] ?? 0);
+            $price = intval($_POST['price'] ?? 0);
 
             if (!$name || !$type || !$capacity || !$status ||  $price <= 0) {
                 throw new Exception('All fields are required and price must be a positive integer.');
@@ -71,15 +82,18 @@ try {
                 }
             }
 
+            // Insert the room into the database
+
             $stmt = $pdo->prepare("INSERT INTO rooms (name, type, capacity, status, image, details, facilities, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            if ($stmt->execute([$name, $type, $capacity, $status, $imageName ,$details, $facilities ,$price])) {
+            if ($stmt->execute([$name, $type, $capacity, $status, $imageName, $details, $facilities, $price])) {
                 echo json_encode(['status' => 'success', 'message' => 'Room added successfully!']);
             } else {
                 throw new Exception('Failed to add room.');
             }
         }
 
-        // Update an existing room
+        // Update an existing room 
+
         elseif ($action === 'update_room') {
             $roomId = intval($_POST['room_id'] ?? 0);
             $name = trim($_POST['room_name'] ?? '');
@@ -120,6 +134,8 @@ try {
                 }
             }
 
+            // Update the room in the database
+
             $stmt = $pdo->prepare("UPDATE rooms SET name = ?, type = ?, capacity = ?, status = ?, image = COALESCE(?, image), details = ?, facilities = ?, price = ?  WHERE id = ?");
             if ($stmt->execute([$name, $type, $capacity, $status, $imageName,  $details, $facilities, $price, $roomId])) {
                 echo json_encode(['status' => 'success', 'message' => 'Room updated successfully!']);
@@ -128,7 +144,8 @@ try {
             }
         }
 
-        // Delete a room
+        // Delete a room if requested
+
         elseif ($action === 'delete_room') {
             $roomId = intval($_POST['room_id'] ?? 0);
 
@@ -148,7 +165,8 @@ try {
             }
         }
 
-        // Invalid action
+        // Invalid action for POST requests
+
         else {
             throw new Exception('Invalid action.');
         }

@@ -1,11 +1,11 @@
 <?php
-// Veritabanı bağlantısı
+// Database connection
 require_once '../config/config.php';
 
-// İşlem kontrolü
+// Admin control
 $action = $_GET['action'] ?? null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'add') {
-    // Oda ekleme işlemi
+    // Add a new room
     $room_name = $_POST['room_name'];
     $room_type = $_POST['room_type'];
     $price = $_POST['price'];
@@ -35,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'add') {
     header("Location: ../public/index.php");
     exit;
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'edit') {
-    // Oda düzenleme işlemi
+    //  update an existing room
+
     $id = $_POST['id'];
     $room_name = $_POST['room_name'];
     $room_type = $_POST['room_type'];
@@ -69,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'add') {
     header("Location: ../public/index.php");
     exit;
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'delete') {
-    // Oda silme işlemi
+    // delete a room
     $id = $_GET['id'];
     $stmt = $pdo->prepare("DELETE FROM rooms WHERE id = :id");
     $stmt->execute([':id' => $id]);
@@ -77,11 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'add') {
     exit;
 }
 
-// Odaları listele
+// Get all rooms
 $stmt = $pdo->query("SELECT * FROM rooms");
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Düzenlenecek oda bilgileri
+//  edit room
 $editRoom = null;
 if ($action === 'edit' && isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -147,6 +148,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
             <button type="submit" class="btn btn-success"><?= $editRoom ? 'Update Room' : 'Add Room' ?></button>
         </form>
 
+           <!--  Display all rooms -->
         <h3 class="mt-5">All Rooms</h3>
         <div id="roomContainer" class="mt-3">
             <?php foreach ($rooms as $room): ?>

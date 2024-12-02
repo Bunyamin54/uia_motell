@@ -1,6 +1,6 @@
 <?php
 
-
+    // Path: admin/login.php
 
 session_start();
 require_once '../config/config.php';
@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email_mobile']);
     $password = trim($_POST['password']);
 
-
+    
+     // Database connection
 
     try {
         $stmt = $pdo->prepare("
@@ -35,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Redirect based on role
             if ($user['role'] === 'admin') {
-                header('Location: /uia_motell/admin/dashboard.php'); // Tam yol
+                header('Location: /uia_motell/admin/dashboard.php'); // Redirect to admin dashboard
                 exit;
             } elseif ($user['role'] === 'guest') {
-                header('Location: /uia_motell/inc/guest_dashboard.php'); // Tam yol
+                header('Location: /uia_motell/inc/guest_dashboard.php'); // Redirect to guest dashboard
                 exit;
             }
         } else {

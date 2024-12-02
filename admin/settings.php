@@ -3,12 +3,16 @@
   <?php
     session_start();
 
+      // Check if the user is logged in
+
     if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
         header('Location: index.php');
         exit;
     }
 
     require_once '../config/config.php';
+
+     // Database connection
 
     try {
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;

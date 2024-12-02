@@ -2,7 +2,8 @@
 
 require_once '../config/config.php';
 
-// Fetch all available rooms
+// Fetch all available rooms from the database
+
 $stmt = $pdo->query("SELECT * FROM rooms WHERE status = 'available'");
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -14,6 +15,9 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+      
+   <!--  Display all available rooms in a grid layout -->
+     
 <div class="container mt-5">
     <h1>Available Rooms</h1>
     <div class="row">

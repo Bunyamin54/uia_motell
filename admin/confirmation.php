@@ -62,6 +62,7 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+       <!-- Display the booking confirmation details -->
     <div class="container mt-5">
         <h1 class="text-center text-success">Booking Confirmation</h1>
         <div class="card">
