@@ -1,6 +1,8 @@
 <?php
 require_once '../config/config.php';
 
+// Determine if the user is logged in
+$isLoggedIn = isset($_SESSION['user']);
 
 //  Database connection
 $stmt = $pdo->query("SELECT * FROM rooms");
@@ -109,44 +111,43 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </script>
 
     <script>
+        const isLoggedIn = <?= json_encode($isLoggedIn) ?>; // Pass PHP variable to JavaScript
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all "Book Now" buttons
             const bookNowButtons = document.querySelectorAll('.book-now-button');
 
-            // Room ID placeholder
-            let selectedRoomId = null;
-
-            // Attach click event listener to each button
             bookNowButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    selectedRoomId = this.dataset.roomId;
-                    const bookingModal = new bootstrap.Modal(document.getElementById('bookingChoiceModal'));
-                    bookingModal.show();
+                    const roomId = this.dataset.roomId;
+
+                    if (isLoggedIn) {
+                        // Redirect to the booking page directly if the user is logged in
+                        window.location.href = `../admin/booking.php?room_id=${roomId}`;
+                    } else {
+                        // Show the modal for non-logged-in users
+                        const bookingModal = new bootstrap.Modal(document.getElementById('bookingChoiceModal'));
+                        bookingModal.show();
+                    }
                 });
             });
 
             // Handle Register button click
-            // Handle Register button click
-            document.getElementById('registerButton').addEventListener('click', function() {
-                // Close the current modal
+            document.getElementById('registerButton')?.addEventListener('click', function() {
                 const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingChoiceModal'));
                 bookingModal.hide();
 
-                // Open the Register Modal
                 const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
                 registerModal.show();
             });
 
-
             // Handle Guest button click
-            // Handle Guest button click
-            document.getElementById('guestButton').addEventListener('click', function() {
-                window.location.href = `../admin/booking.php?room_id=${selectedRoomId}`;
+            document.getElementById('guestButton')?.addEventListener('click', function() {
+                window.location.href = `../admin/booking.php?room_id=${roomId}`;
             });
-
         });
     </script>
+
 
 </body>
 
