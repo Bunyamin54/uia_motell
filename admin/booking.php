@@ -81,11 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="mb-3">
                 <label for="user_name" class="form-label">Your Name</label>
-                <input type="text" name="user_name" id="user_name" class="form-control" required>
+                <input type="text" name="user_name" id="user_name" class="form-control" placeholder="Enter your name" required>
             </div>
             <div class="mb-3">
                 <label for="user_email" class="form-label">Your Email</label>
-                <input type="email" name="user_email" id="user_email" class="form-control" required>
+                <input type="email" name="user_email" id="user_email" class="form-control" placeholder="Enter your email" required>
             </div>
             <div class="mb-3">
                 <label for="check_in" class="form-label">Check-In Date</label>

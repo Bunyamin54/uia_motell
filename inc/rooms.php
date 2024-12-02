@@ -57,7 +57,8 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <?= $facilities ?>
                                 </div>
                                 <div class="d-flex justify-content-evenly">
-                                    <a href="../admin/booking.php?room_id=<?= $room['id'] ?>" class="btn btn-primary">Book Now</a>
+                                    <a href="#" class="btn btn-primary book-now-button" data-room-id="<?= $room['id'] ?>">Book Now</a>
+
                                     <a href="#" class="btn btn-sm btn-success">More Info</a>
                                 </div>
                             </div>
@@ -71,7 +72,7 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.querySelector('.availability-form form').addEventListener('submit', function (e) {
+        document.querySelector('.availability-form form').addEventListener('submit', function(e) {
             e.preventDefault(); // Form submission is prevented
 
             const roomContainer = document.getElementById('roomContainer');
@@ -106,6 +107,47 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all "Book Now" buttons
+            const bookNowButtons = document.querySelectorAll('.book-now-button');
+
+            // Room ID placeholder
+            let selectedRoomId = null;
+
+            // Attach click event listener to each button
+            bookNowButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    selectedRoomId = this.dataset.roomId;
+                    const bookingModal = new bootstrap.Modal(document.getElementById('bookingChoiceModal'));
+                    bookingModal.show();
+                });
+            });
+
+            // Handle Register button click
+            // Handle Register button click
+            document.getElementById('registerButton').addEventListener('click', function() {
+                // Close the current modal
+                const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingChoiceModal'));
+                bookingModal.hide();
+
+                // Open the Register Modal
+                const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+                registerModal.show();
+            });
+
+
+            // Handle Guest button click
+            // Handle Guest button click
+            document.getElementById('guestButton').addEventListener('click', function() {
+                window.location.href = `../admin/booking.php?room_id=${selectedRoomId}`;
+            });
+
+        });
+    </script>
+
 </body>
 
 </html>

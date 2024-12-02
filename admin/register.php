@@ -44,4 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Error: " . $e->getMessage();
     }
 }
+
+
+   // Redirect to booking page if applicable
+if (isset($_GET['redirect']) && $_GET['redirect'] === 'booking' && isset($_GET['room_id'])) {
+    header("Location: booking.php?room_id=" . $_GET['room_id']);
+    exit;
+}
+
 ?>
