@@ -1,5 +1,6 @@
-# uia_motell
+# UIA_Motell_Prosjekt with PHP
 
+# Github link : https://github.com/Bunyamin54/uia_motell
 
 # Access Information
 
@@ -15,12 +16,12 @@ Guests can register and log in to view and manage their bookings on their person
 
 # Database credentials
 
-// Database host      '127.0.0.1' 
-// Database name      'uia_motell'  
-// Database username  'root';       
-// Database password  '123';        
-// 'APP_NAME',        'UIA Motel';   
-// 'BASE_URL',        'http://localhost/uia_motell/';
+//   Database host      '127.0.0.1' 
+//   Database name      'uia_motell'  
+//   Database username  'root';       
+//   Database password  '123';        
+//   'APP_NAME',        'UIA Motel';   
+//   'BASE_URL',        'http://localhost/uia_motell/';
 
 
 
