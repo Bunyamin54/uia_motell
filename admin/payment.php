@@ -2,6 +2,8 @@
 session_start();
 require_once '../config/config.php';
 
+ // CSRF token
+
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -10,6 +12,8 @@ if (!isset($_SESSION['booking'])) {
     header("Location: available_rooms.php?error=missing_booking");
     exit;
 }
+
+ // store the booking details in the session
 
 $booking = $_SESSION['booking'];
 
@@ -42,11 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]);
 
+                  // Insert booking details into the database
+
                 $stmt = $pdo->prepare("
                     INSERT INTO bookings (room_id, user_name, user_email, check_in, check_out, total_price, status, payment_status) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 ");
 
+
+                  // Update loyalty points and discount level
                 if ($stmt->execute([
                     $booking['room_id'],
                     $booking['user_name'],
@@ -60,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $lastInsertId = $pdo->lastInsertId();
 
                     try {
-                        // Kullanıcının sadakat puanlarını artır
+                        // Update loyalty points
                         $loyaltyUpdate = $pdo->prepare("
                             UPDATE guest_users 
                             SET loyalty_points = loyalty_points + 5 
@@ -68,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ");
                         $loyaltyUpdate->execute([$booking['user_email']]);
                     
-                        // Kullanıcının mevcut sadakat puanlarını kontrol et
+                        // Check current loyalty points
                         $loyaltyCheck = $pdo->prepare("
                             SELECT loyalty_points 
                             FROM guest_users 
@@ -77,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $loyaltyCheck->execute([$booking['user_email']]);
                         $loyaltyPoints = $loyaltyCheck->fetchColumn();
                     
-                        // Eğer sadakat puanları 20'yi geçerse, indirim seviyesini güncelle
+                        // Update discount level if loyalty points reach 20
                         if ($loyaltyPoints >= 20) {
                             $updateDiscount = $pdo->prepare("
                                 UPDATE guest_users 
@@ -160,6 +168,7 @@ function mockPayment($card_number, $expiry_date, $cvv) {
         </form>
     </div>
 
+      <!-- Validate payment form fields -->
     <script>
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
             let isValid = true;

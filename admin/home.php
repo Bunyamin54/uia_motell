@@ -75,8 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['home_image'])) {
         if (move_uploaded_file($file['tmp_name'], $targetFile)) {
             error_log("File moved successfully.");
         
-            // Veritabanına tam yolu kaydet
-            $imagePath = "../public/images/home/" . $fileName; // Tam yolu oluştur
+            // Database insertion
+
+            $imagePath = "../public/images/home/" . $fileName;  // Relative path
             try {
                 $stmt = $pdo->prepare("INSERT INTO homepage_images (image_path) VALUES (:image_path)");
                 $stmt->execute([':image_path' => $imagePath]);
