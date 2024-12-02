@@ -130,42 +130,40 @@ $images = $stmt->fetchAll();
         });
     </script>
 
-<script>
-    document.querySelector('.availability-form form').addEventListener('submit', function (e) {
-        e.preventDefault(); // Formun varsayılan davranışını engelle
+ <script>
+document.querySelector('.availability-form form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Formun varsayılan davranışını engelle
 
-        // Simüle edilmiş durumlar
-        const availabilityStatuses = ['Fully Booked', 'Few Rooms Left', 'Not Available for Your Dates'];
+    const roomContainer = document.getElementById('roomContainer');
+    if (!roomContainer) {
+        alert('Room container not found!');
+        return;
+    }
+
+    const roomCards = roomContainer.querySelectorAll('.card');
+
+    if (roomCards.length === 0) {
+        alert('No rooms found to update!');
+        return;
+    }
+
+    roomCards.forEach((card, index) => {
+        const statuses = ['Available', 'Few Rooms Left', 'Fully Booked'];
         const colors = ['bg-success', 'bg-warning', 'bg-danger'];
 
-        // RoomContainer'daki odaları seç
-        const roomCards = document.querySelectorAll('#roomContainer .card');
-
-        if (roomCards.length === 0) {
-            alert('No rooms found to update!');
-            return;
+        // Eski badge'leri temizle
+        const existingBadge = card.querySelector('.badge');
+        if (existingBadge) {
+            existingBadge.remove();
         }
 
-        // Daha önceki etiketleri temizle ve yeni durumu ekle
-        roomCards.forEach((card, index) => {
-            const statusIndex = index % availabilityStatuses.length;
-
-            // Daha önce var olan badge'leri temizle
-            const existingBadge = card.querySelector('.badge');
-            if (existingBadge) {
-                existingBadge.remove();
-            }
-
-            // Yeni etiket oluştur ve ekle
-            const badge = document.createElement('span');
-            badge.textContent = availabilityStatuses[statusIndex];
-            badge.className = `badge position-absolute top-0 start-0 m-2 ${colors[statusIndex]}`;
-            card.style.position = 'relative'; // Kartın konumunu ayarla
-            card.appendChild(badge);
-        });
-
-       
+        // Yeni badge oluştur ve ekle
+        const badge = document.createElement('span');
+        badge.className = `badge position-absolute top-0 start-0 m-2 ${colors[index % statuses.length]}`;
+        badge.textContent = statuses[index % statuses.length];
+        card.appendChild(badge);
     });
+});
 </script>
 
 
