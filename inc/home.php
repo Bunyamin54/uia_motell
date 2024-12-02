@@ -1,5 +1,5 @@
 <?php
-// Veritabanı bağlantısı
+// Database connection
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -9,7 +9,8 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Resim yollarını al
+// Retrieve homepage images
+
 $stmt = $pdo->query("SELECT image_path FROM homepage_images");
 $images = $stmt->fetchAll();
 ?>
@@ -132,7 +133,7 @@ $images = $stmt->fetchAll();
 
  <script>
 document.querySelector('.availability-form form').addEventListener('submit', function (e) {
-    e.preventDefault(); // Formun varsayılan davranışını engelle
+    e.preventDefault(); // Form submission is prevented
 
     const roomContainer = document.getElementById('roomContainer');
     if (!roomContainer) {
@@ -151,13 +152,15 @@ document.querySelector('.availability-form form').addEventListener('submit', fun
         const statuses = ['Available', 'Few Rooms Left', 'Fully Booked'];
         const colors = ['bg-success', 'bg-warning', 'bg-danger'];
 
-        // Eski badge'leri temizle
+        // available, few rooms left, fully booked
+        
         const existingBadge = card.querySelector('.badge');
         if (existingBadge) {
             existingBadge.remove();
         }
 
-        // Yeni badge oluştur ve ekle
+        // You can use the index to cycle through the statuses array
+        
         const badge = document.createElement('span');
         badge.className = `badge position-absolute top-0 start-0 m-2 ${colors[index % statuses.length]}`;
         badge.textContent = statuses[index % statuses.length];

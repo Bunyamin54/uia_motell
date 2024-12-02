@@ -1,7 +1,8 @@
 <?php
 require_once '../config/config.php';
 
-// Odaları listele
+
+//  Database connection
 $stmt = $pdo->query("SELECT * FROM rooms");
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -30,7 +31,8 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
                 <?php foreach ($rooms as $room): ?>
                     <?php
-                    // Verileri hazırlama
+                    // Room image path
+
                     $imagePath = !empty($room['image']) ? "../public/images/rooms/{$room['image']}" : '../public/images/default-placeholder.png';
                     $details = !empty($room['details'])
                         ? implode(' ', array_map(fn($detail) => "<span class='badge text-success'>$detail</span>", explode(',', $room['details'])))
@@ -70,7 +72,7 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelector('.availability-form form').addEventListener('submit', function (e) {
-            e.preventDefault(); // Formun varsayılan davranışını engelle
+            e.preventDefault(); // Form submission is prevented
 
             const roomContainer = document.getElementById('roomContainer');
             if (!roomContainer) {
@@ -89,13 +91,14 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 const statuses = ['Available', 'Few Rooms Left', 'Not Available for Your Dates'];
                 const colors = ['bg-success', 'bg-warning', 'bg-danger'];
 
-                // Eski badge'leri temizle
+                // delete existing badge
+
                 const existingBadge = card.querySelector('.badge');
                 if (existingBadge) {
                     existingBadge.remove();
                 }
 
-                // Yeni badge oluştur ve ekle
+                // create new badge
                 const badge = document.createElement('span');
                 badge.className = `badge position-absolute top-0 start-0 m-2 ${colors[index % statuses.length]}`;
                 badge.textContent = statuses[index % statuses.length];

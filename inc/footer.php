@@ -45,6 +45,7 @@
 
             </div>
         </div>
+            <!--  Display the copyright -->
         <div class="text-center mt-4" style="color:#C80F2F;" >
             <small>© 2024 UIA Motel | Designed and developed by Group 2</small>
         </div>

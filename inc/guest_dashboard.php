@@ -2,7 +2,8 @@
 session_start();
 require_once '../config/config.php';
 
-// Kullanıcı oturum kontrolü
+// Check if the user is logged in
+
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'guest') {
     header('Location: ../admin/login.php');
     exit;
@@ -10,7 +11,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'guest') {
 
 $user = $_SESSION['user'];
 
-// Kullanıcının sadakat puanlarını ve indirim seviyesini al
+// user information from the database
+
 try {
     $userInfoStmt = $pdo->prepare("
         SELECT loyalty_points, discount_level 
@@ -27,7 +29,8 @@ try {
 }
 
 try {
-    // Kullanıcının sadakat puanlarını artır
+    // users booking details
+
     $loyaltyUpdate = $pdo->prepare("
         UPDATE guest_users 
         SET loyalty_points = loyalty_points + 10 
@@ -35,7 +38,8 @@ try {
     ");
     $loyaltyUpdate->execute([$booking['user_email']]);
 
-    // Kullanıcının mevcut sadakat puanlarını kontrol et
+    // users loyalty points
+
     $loyaltyCheck = $pdo->prepare("
         SELECT loyalty_points 
         FROM guest_users 
@@ -44,7 +48,8 @@ try {
     $loyaltyCheck->execute([$booking['user_email']]);
     $loyaltyPoints = $loyaltyCheck->fetchColumn();
 
-    // Eğer sadakat puanları 20 veya daha fazlaysa indirim seviyesini güncelle
+    // if loyalty points reach 20, update discount level
+
     if ($loyaltyPoints >= 20) {
         $updateDiscount = $pdo->prepare("
             UPDATE guest_users 
@@ -58,7 +63,8 @@ try {
 }
 
 
-// Kullanıcının rezervasyon geçmişini al
+// users booking history
+
 $stmt = $pdo->prepare("
     SELECT b.id, r.name AS room_name, b.check_in, b.check_out, b.total_price, b.status 
     FROM bookings b

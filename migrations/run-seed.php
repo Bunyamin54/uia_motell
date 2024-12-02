@@ -2,7 +2,7 @@
 require_once '../config/config.php';
 
 try {
-    // PDO bağlantısı
+    // PDO connection
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
     $pdo = new PDO($dsn, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -12,7 +12,8 @@ try {
 
     echo "Database connected successfully!<br>";
 
-    // Kullanıcıları seed et
+    // User seed page
+
     $checkUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
     if ($checkUsers == 0) {
         $pdo->exec("
@@ -103,7 +104,8 @@ try {
         }
     }
 
-    // **Seed Settings**
+    // Seed Settings
+
     $defaultSettings = [
         ['name' => 'site_name', 'value' => 'Uia Motell'],
         ['name' => 'admin_email', 'value' => 'admin@uia.com']
@@ -122,7 +124,8 @@ try {
         echo "Inserted or updated {$setting['name']} in settings.<br>";
     }
 
-      // Seed Shutdown Setting**
+      // Seed Shutdown Setting
+      
     $defaultSettings[] = ['name' => 'shutdown', 'value' => '0'];
 
     foreach ($defaultSettings as $setting) {

@@ -28,7 +28,8 @@
         die("Database connection failed: " . $e->getMessage());
     }
 
-    // Shutdown kontrolü
+    // Shutdown  condition
+    
     $stmt = $pdo->prepare("SELECT value FROM settings WHERE name = 'shutdown'");
     $stmt->execute();
     $shutdown = (int) $stmt->fetchColumn();
