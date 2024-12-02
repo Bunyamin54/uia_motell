@@ -86,7 +86,7 @@ $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
 
             roomCards.forEach((card, index) => {
-                const statuses = ['Available', 'Few Rooms Left', 'Fully Booked'];
+                const statuses = ['Available', 'Few Rooms Left', 'Not Available for Your Dates'];
                 const colors = ['bg-success', 'bg-warning', 'bg-danger'];
 
                 // Eski badge'leri temizle
