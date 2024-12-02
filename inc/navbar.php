@@ -193,14 +193,14 @@ $siteName = $stmt->fetchColumn() ?? 'UIA Motel'; // Default to "UIA Motel" if no
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="bookingChoiceModalLabel">Continue Booking</h5>
+                    <h5 class="modal-title " id="bookingChoiceModalLabel">Continue Booking</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p class="mb-3">Would you like to register for a personalized experience or continue as a guest?</p>
                     <div class="d-flex justify-content-evenly">
                         <a href="#" class="btn btn-outline-primary" id="registerButton">Register</a>
-                        <a href="#" class="btn btn-outline-secondary" id="guestButton">Continue as Guest</a>
+                        <a href="#" class="btn btn-outline-success" id="guestButton">Continue as Guest</a>
                     </div>
                 </div>
             </div>
