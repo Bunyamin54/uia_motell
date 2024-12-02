@@ -150,7 +150,7 @@
                   .then(data => {
                       const toastContainer = document.querySelector('.toast-container');
 
-                      // Dinamik Toast Mesajı
+                      // Dinamik Toast message
                       const toast = document.createElement('div');
                       toast.className = `toast text-bg-${data.success ? 'success' : 'danger'} show`;
                       toast.setAttribute('role', 'alert');
