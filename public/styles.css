@@ -21,14 +21,16 @@ input[type="number"] {
   background-color: var(--teal);
   border: 1px solid green;
   color: #FFFFFF;
-  transform: translateX(-5px); 
+  transform: translateX(-10px);
+  margin-left: -10px; 
 }
 
 .custom-bg:hover {
   background-color: var(--teal_hover);
   border-color: darkgreen;
-  transform: translateX(-5px); 
+  transform: translateX(-10px);
 }
+
 
 
 

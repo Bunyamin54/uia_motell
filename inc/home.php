@@ -93,7 +93,8 @@ $images = $stmt->fetchAll();
                             </select>
                         </div>
                         <div class="col-12 col-lg-1 mb-lg-3 mt-2">
-                          <button type="submit" class="btn text-success shadow-none custom-bg ms-0">Search</button>
+                        <button type="submit" class="btn text-success shadow-none custom-bg" style="margin-left: -10px;">Search</button>
+
                          </div>
 
                     </div>
